@@ -25,7 +25,7 @@ namespace NOOD.NoodCamera
 
         public static CustomCamera InsCustomCamera;
 
-        void Awake()
+        protected override void ChildAwake()
         {
             if(InsCustomCamera == null) InsCustomCamera = this;
         }

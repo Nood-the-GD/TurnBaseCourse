@@ -4,41 +4,42 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] private Animator _unitAnimator;
-    
-    private Vector3 _targetPosition;
-    private float _moveSpeed = 4;
-    private float _rotateSpeed = 10;
-    private float _distanceToStop = 0.1f;
+    [SerializeField] private float _moveSpeed = 5;
+    [SerializeField] private float _rotateSpeed = 10;
 
+    private GridPosition _gridPosition;
+    private MoveAction _moveAction;
+
+    #region Unity Functions
     private void Awake()
     {
-        _targetPosition = this.transform.position;
+        _moveAction = this.GetComponent<MoveAction>();
     }
-
     private void Start()
     {
-        GridPositionStruct gridPositionStruct = LevelGrid.Instance.GetGridPosition(this.transform.position);
-        LevelGrid.Instance.SetUnitAtGridPosition(gridPositionStruct, this);
+        _gridPosition = LevelGrid.Instance.GetGridPosition(this.transform.position);
+        LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
+        _moveAction.SetMoveProperty(_moveSpeed, _rotateSpeed);
     }
-
     private void Update()
     {
-        float distance = Vector3.Distance(this.transform.position,_targetPosition);
-        if (distance > _distanceToStop)
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(this.transform.position);
+        if(newGridPosition != _gridPosition)
         {
-            _unitAnimator.SetBool("Walk", true);
-            Vector3 moveDirection = (_targetPosition - transform.position).normalized;
-            transform.position += moveDirection * _moveSpeed * Time.deltaTime;
-            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * _rotateSpeed);
+            // Unit change grid position
+            LevelGrid.Instance.UnitMoveGridPosition(this, _gridPosition, newGridPosition);
+            _gridPosition = newGridPosition;
         }
-        else
-            _unitAnimator.SetBool("Walk", false);
-
+    }
+    #endregion
+    
+    public MoveAction GetMoveAction()
+    {
+        return this._moveAction;        
     }
 
-    public void SetTargetPosition(Vector3 targetPosition)
+    public GridPosition GetCurrentGridPosition()
     {
-        _targetPosition = targetPosition;
+        return _gridPosition;
     }
 }

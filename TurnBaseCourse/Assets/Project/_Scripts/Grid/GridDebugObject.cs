@@ -13,7 +13,7 @@ public class GridDebugObject : MonoBehaviour
         this._gridObject = gridObject;
         UpdateGridData();
     }
-    private void UpdateGridData()
+    public void UpdateGridData()
     {
         _debugText.text = _gridObject.ToString();
     }

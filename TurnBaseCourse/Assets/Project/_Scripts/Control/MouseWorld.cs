@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using NOOD;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class MouseWorld : MonoBehaviorInstance<MouseWorld>
 {
@@ -11,7 +7,6 @@ public class MouseWorld : MonoBehaviorInstance<MouseWorld>
 
     private void Update()
     {
-        this.transform.position = GetPosition();
     }
 
     public static Vector3 GetPosition()

@@ -14,6 +14,7 @@ namespace NOOD
         {
             get
             {
+                if (s_instance == null) Debug.Log($"Can't find {typeof(T)}");
                 return s_instance;
             }
         }
@@ -23,6 +24,7 @@ namespace NOOD
             if (s_instance != null)
             {
                 Debug.LogError($"Exist 2 {typeof(T)} in the scene {this.gameObject.name} and {s_instance.gameObject.name}");
+                Destroy(s_instance.gameObject);
             }
             s_instance = this as T;
             ChildAwake();

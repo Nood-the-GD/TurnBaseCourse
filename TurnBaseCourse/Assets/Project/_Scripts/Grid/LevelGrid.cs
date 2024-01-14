@@ -13,26 +13,45 @@ public class LevelGrid : MonoBehaviorInstance<LevelGrid>
     {
         _gridSystem = new GridSystem(4, 4, 2f);
     }
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitForEndOfFrame();
         _gridSystem.CreateDebugObjects(_debugPref);
     }
 
-    public GridPositionStruct GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
-    public void SetUnitAtGridPosition(GridPositionStruct gridPositionStruct, Unit unit)
+    #region Grid Zone
+    public bool IsValidGrid(GridPosition gridPositionStruct) => _gridSystem.IsValidGridPosition(gridPositionStruct);
+    public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
+    public Vector3 GetWorldPosition(GridPosition gridPositionStruct) => _gridSystem.GetWorldPosition(gridPositionStruct);
+    #endregion
+
+    #region Unit Zone
+    public List<Unit> GetUnitListAtGridPosition(GridPosition gridPositionStruct)
     {
         GridObject gridObject = _gridSystem.GetGridObject(gridPositionStruct);
-        gridObject.SetUnit(unit);
+        return gridObject.GetUnitList();
     }
-    public Unit GetUnitAtGridPosition(GridPositionStruct gridPositionStruct)
+    public void AddUnitAtGridPosition(GridPosition gridPositionStruct, Unit unit)
     {
         GridObject gridObject = _gridSystem.GetGridObject(gridPositionStruct);
-        return gridObject.GetUnit();
+        gridObject.AddUnit(unit);
+        _gridSystem.UpdateGridDebugData();
     }
-    public void ClearUnitAtGridPosition(GridPositionStruct gridPositionStruct)
+    public void RemoveUnitAtGridPosition(GridPosition gridPositionStruct, Unit unit)
     {
         GridObject gridObject = _gridSystem.GetGridObject(gridPositionStruct);
-        gridObject.SetUnit(null);
+        gridObject.RemoveUnit(unit);
+        _gridSystem.UpdateGridDebugData();
     }
+    public void UnitMoveGridPosition(Unit unit, GridPosition from, GridPosition to)
+    {
+        RemoveUnitAtGridPosition(from, unit);
+        AddUnitAtGridPosition(to, unit);
+    }
+    public bool HasAnyUnitOnGridPosition(GridPosition positionStruct)
+    {
+        return _gridSystem.GetGridObject(positionStruct).HasAnyUnit();
+    }
+    #endregion
 
 }
