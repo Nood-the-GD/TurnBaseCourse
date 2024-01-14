@@ -1,51 +1,52 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using NOOD;
 using UnityEngine;
 
-public class UnitActionSystem : MonoBehaviorInstance<UnitActionSystem>
+namespace Game
 {
-    public event EventHandler OnSelectUnitChange;
-
-    [SerializeField] private Unit _selectedUnit;
-    [SerializeField] private LayerMask _unitLayer;
-
-    private void Update()
+    public class UnitActionSystem : MonoBehaviorInstance<UnitActionSystem>
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            if(TrySelectUnit() == false)
-            {
+        public event EventHandler OnSelectUnitChange;
 
-                GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
-                if(_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
+        [SerializeField] private Unit _selectedUnit;
+        [SerializeField] private LayerMask _unitLayer;
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (TrySelectUnit() == false)
                 {
-                    _selectedUnit.GetMoveAction().SetTargetPosition(mouseGridPosition);
+
+                    GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+                    if (_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
+                    {
+                        _selectedUnit.GetMoveAction().SetTargetPosition(mouseGridPosition);
+                    }
                 }
             }
         }
-    }
 
-    private bool TrySelectUnit()
-    {
-        if (MouseWorld.TryGetSelectedObjectWithLayer(_unitLayer, out GameObject go))
+        private bool TrySelectUnit()
         {
-            SetSelectedUnit(go.GetComponent<Unit>());
-            return true;
+            if (MouseWorld.TryGetSelectedObjectWithLayer(_unitLayer, out GameObject go))
+            {
+                SetSelectedUnit(go.GetComponent<Unit>());
+                return true;
+            }
+            else
+                return false;
         }
-        else
-            return false;
-    }
 
-    private void SetSelectedUnit(Unit unit)
-    {
-        _selectedUnit = unit;
-        OnSelectUnitChange?.Invoke(this, EventArgs.Empty);
-    }
-    
-    public Unit GetSelectedUnit()
-    {
-        return _selectedUnit;
+        private void SetSelectedUnit(Unit unit)
+        {
+            _selectedUnit = unit;
+            OnSelectUnitChange?.Invoke(this, EventArgs.Empty);
+        }
+
+        public Unit GetSelectedUnit()
+        {
+            return _selectedUnit;
+        }
     }
 }

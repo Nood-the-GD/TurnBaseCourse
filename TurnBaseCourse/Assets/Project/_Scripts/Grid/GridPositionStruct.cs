@@ -1,52 +1,54 @@
 using System;
-using Unity.VisualScripting.IonicZip;
 
-public struct GridPosition : IEquatable<GridPosition>
+namespace Game
 {
-    public int X;
-    public int Z;
+    public struct GridPosition : IEquatable<GridPosition>
+    {
+        public int X;
+        public int Z;
 
-    public GridPosition(int x, int z)
-    {
-        this.X = x;
-        this.Z = z;
-    }
+        public GridPosition(int x, int z)
+        {
+            this.X = x;
+            this.Z = z;
+        }
 
-    public override string ToString()
-    {
-        return $"x: {X}, z: {Z}";
-    }
+        public override string ToString()
+        {
+            return $"x: {X}, z: {Z}";
+        }
 
-    public override bool Equals(object obj)
-    {
-        return obj is GridPosition position && X == position.X && Z == position.Z;
-    }
-    public bool Equals(GridPosition other)
-    {
-        return this == other;
-    }
+        public override bool Equals(object obj)
+        {
+            return obj is GridPosition position && X == position.X && Z == position.Z;
+        }
+        public bool Equals(GridPosition other)
+        {
+            return this == other;
+        }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(X, Z);
-    }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Z);
+        }
 
 
-    public static bool operator == (GridPosition a, GridPosition b)
-    {
-        return a.X == b.X && a.Z == b.Z;
-    }
+        public static bool operator ==(GridPosition a, GridPosition b)
+        {
+            return a.X == b.X && a.Z == b.Z;
+        }
 
-    public static bool operator != (GridPosition a, GridPosition b)
-    {
-        return !(a == b);
-    }
-    public static GridPosition operator +(GridPosition a, GridPosition b)
-    {
-        return new GridPosition(a.X + b.X, a.Z + b.Z);
-    }
-    public static GridPosition operator -(GridPosition a, GridPosition b)
-    {
-        return new GridPosition(a.X - b.X, a.Z - b.Z);
+        public static bool operator !=(GridPosition a, GridPosition b)
+        {
+            return !(a == b);
+        }
+        public static GridPosition operator +(GridPosition a, GridPosition b)
+        {
+            return new GridPosition(a.X + b.X, a.Z + b.Z);
+        }
+        public static GridPosition operator -(GridPosition a, GridPosition b)
+        {
+            return new GridPosition(a.X - b.X, a.Z - b.Z);
+        }
     }
 }
