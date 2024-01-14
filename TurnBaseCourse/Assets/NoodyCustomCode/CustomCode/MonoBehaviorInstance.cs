@@ -1,54 +1,35 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 namespace NOOD
 {
     public class MonoBehaviorInstance <T> : AbstractMonoBehaviour where T : MonoBehaviour
     {
-
+        private static T s_instance;
         public static T Instance
         {
             get
             {
-                if (InstanceHolder.GetInstance<T>())
-                {
-                    return InstanceHolder.GetInstance<T>();
-                }
-                else
-                    Debug.LogError("Can't find Instance of " + typeof(T));
-                return null;        
+                return s_instance;
             }
         }
 
-        void Awake()
+        protected void Awake()
         {
-            InstanceHolder.AddToInstanceDic(typeof(T), this);
-        }
-    }
-
-    public static class InstanceHolder
-    {
-        private static Dictionary<Type, object> _instanceDic = new Dictionary<Type, object>();
-
-        public static T GetInstance<T>() where T : MonoBehaviour
-        {
-            if (_instanceDic.TryGetValue(typeof(T), out object instance))
+            if (s_instance != null)
             {
-                return (T)instance;
+                Debug.LogError($"Exist 2 {typeof(T)} in the scene {this.gameObject.name} and {s_instance.gameObject.name}");
             }
-            else
-                return null;
+            s_instance = this as T;
+            ChildAwake();
         }
 
-        public static void AddToInstanceDic(Type type, object instance)
-        {
-            if(!_instanceDic.TryAdd(type, instance))
-            {
-                _instanceDic[type] = instance;
-            }
-        }
+        protected virtual void ChildAwake()
+        {}
     }
 }
 

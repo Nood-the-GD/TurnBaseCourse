@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NOOD;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -18,5 +19,20 @@ public class MouseWorld : MonoBehaviorInstance<MouseWorld>
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out RaycastHit hitInfo, float.MaxValue, MouseWorld.Instance._groundLayer);
         return hitInfo.point;
+    }
+
+    public static bool TryGetSelectedObjectWithLayer(LayerMask layerMask, out GameObject gameObject)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, float.MaxValue, layerMask))
+        {
+            gameObject = hitInfo.transform.gameObject;
+            return true;
+        }
+        else
+        {
+            gameObject = null;
+            return false;
+        }
     }
 }
