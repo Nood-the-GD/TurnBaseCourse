@@ -1,37 +1,45 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
 {
-    public class MoveAction : MonoBehaviour
+    public class MoveAction : BaseAction
     {
         [SerializeField] private Animator _unitAnimator;
         private float DISTANCE_TO_STOP = 0.1f;
         private Vector3 _targetPosition;
         private float _moveSpeed;
         private float _rotateSpeed;
-        private Unit _unit;
 
         #region Unity functions
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _targetPosition = this.transform.position;
-            _unit = GetComponent<Unit>();
         }
         private void Update()
         {
+            if (!_isActive) return;
+
             float distance = Vector3.Distance(this.transform.position, _targetPosition);
+            Vector3 moveDirection = (_targetPosition - transform.position).normalized;
 
             if (distance > 0.1f)
             {
                 _unitAnimator.SetBool("Walk", true);
-                Vector3 moveDirection = (_targetPosition - transform.position).normalized;
                 MoveHandler(moveDirection);
-                RotateHandler(moveDirection);
             }
             else
+            {
                 _unitAnimator.SetBool("Walk", false);
+                _isActive = false;
+                OnActionComplete?.Invoke();
+            }
+
+            
+            RotateHandler(moveDirection);
         }
         #endregion
 
@@ -51,18 +59,15 @@ namespace Game
         }
         #endregion
 
-        public void SetTargetPosition(GridPosition targetPos)
+        public override void TakeAction(GridPosition targetPos, Action onComplete)
         {
+            OnActionComplete += onComplete;
+            _isActive = true;
             _targetPosition = LevelGrid.Instance.GetWorldPosition(targetPos);
         }
 
-        public bool IsValidActionGridPosition(GridPosition gridPositionStruct)
-        {
-            List<GridPosition> validGridPositionList = GetValidGridPositionList();
-            return validGridPositionList.Contains(gridPositionStruct);
-        }
 
-        public List<GridPosition> GetValidGridPositionList()
+        public override List<GridPosition> GetValidGridPositionList()
         {
             List<GridPosition> validGridPositionList = new List<GridPosition>();
 
@@ -97,6 +102,11 @@ namespace Game
                 return false;
             }
             return true;
+        }
+
+        public override string GetActionName()
+        {
+            return "Move";
         }
     }
 }

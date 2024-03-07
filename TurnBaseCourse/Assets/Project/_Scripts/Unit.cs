@@ -11,11 +11,15 @@ namespace Game
 
         private GridPosition _gridPosition;
         private MoveAction _moveAction;
+        private SpinAction _spinAction;
+        private BaseAction[] _baseActionArray;
 
         #region Unity Functions
         private void Awake()
         {
+            _baseActionArray = this.GetComponents<BaseAction>();
             _moveAction = this.GetComponent<MoveAction>();
+            _spinAction = this.GetComponent<SpinAction>();
         }
         private void Start()
         {
@@ -39,10 +43,19 @@ namespace Game
         {
             return this._moveAction;
         }
+        public SpinAction GetSpinAction()
+        {
+            return this._spinAction;
+        }
 
         public GridPosition GetCurrentGridPosition()
         {
             return _gridPosition;
+        }
+
+        public BaseAction[] GetBaseActionArray()
+        {
+            return _baseActionArray;
         }
     }
 }
