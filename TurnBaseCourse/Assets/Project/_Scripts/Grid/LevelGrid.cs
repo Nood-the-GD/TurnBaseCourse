@@ -24,6 +24,11 @@ namespace Game
         }
 
         #region Grid Zone
+        /// <summary>
+        /// Test if grid is null or not 
+        /// </summary>
+        /// <param name="gridPositionStruct"></param>
+        /// <returns></returns>
         public bool IsValidGrid(GridPosition gridPositionStruct) => _gridSystem.IsValidGridPosition(gridPositionStruct);
         public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
         public Vector3 GetWorldPosition(GridPosition gridPositionStruct) => _gridSystem.GetWorldPosition(gridPositionStruct);
@@ -55,6 +60,10 @@ namespace Game
         public bool HasAnyUnitOnGridPosition(GridPosition positionStruct)
         {
             return _gridSystem.GetGridObject(positionStruct).HasAnyUnit();
+        }
+        public Unit GetUnitAtGridPosition(GridPosition gridPositionStruct)
+        {
+            return _gridSystem.GetGridObject(gridPositionStruct).GetUnit();
         }
         #endregion
 

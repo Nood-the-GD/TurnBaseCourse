@@ -40,12 +40,12 @@ namespace Game
         }
         #endregion
 
-        #region Update 
+        #region Update Visual 
         private void UpdateGridVisual()
         {
             HideAllGridPosition();
-            Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
-            ShowGridPositionList(selectedUnit.GetMoveAction().GetValidGridPositionList());
+            BaseAction baseAction = UnitActionSystem.Instance.GetSelectedAction();
+            ShowGridPositionList(baseAction.GetValidGridPositionList());
         }
         #endregion
 

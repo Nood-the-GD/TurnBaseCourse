@@ -41,5 +41,12 @@ namespace Game
         {
             return _unitList.Count > 0;
         }
+        public Unit GetUnit()
+        {
+            if (HasAnyUnit())
+                return _unitList[0];
+            else
+                return null;
+        }
     }
 }

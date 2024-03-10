@@ -9,6 +9,7 @@ namespace Game
     {
         private float _totalSpinAmount;
         
+        #region Unity functions
         private void Update()
         {
             if(_isActive)
@@ -17,28 +18,36 @@ namespace Game
                 _totalSpinAmount += spinAmount;
                 if(_totalSpinAmount >= 360)
                 {
-                    _isActive = false;
-                    OnActionComplete?.Invoke();
+                    ActionComplete();
                 }
                 transform.eulerAngles += new Vector3(0, spinAmount, 0);
             }
         }
+        #endregion
 
+        #region Override functions
         public override void TakeAction(GridPosition gridPosition, Action onSpinComplete)
         {
-            OnActionComplete += onSpinComplete;
-            _isActive = true;
+            ActionStart(onSpinComplete);
             _totalSpinAmount = 0;
         }
-
         public override List<GridPosition> GetValidGridPositionList()
         {
-            throw new NotImplementedException();
-        }
+            GridPosition unitGridPosition = _unit.GetCurrentGridPosition();
 
+            return new List<GridPosition>
+            {
+                unitGridPosition
+            };
+        }
         public override string GetActionName()
         {
             return "Spin";
         }
+        public override int GetActionPointCost()
+        {
+            return 2;
+        }
+        #endregion
     }
 }

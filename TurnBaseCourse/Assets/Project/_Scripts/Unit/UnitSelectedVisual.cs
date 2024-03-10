@@ -9,6 +9,7 @@ namespace Game
 
         private MeshRenderer _meshRenderer;
 
+        #region Unity Functions
         private void Awake()
         {
             _meshRenderer = GetComponent<MeshRenderer>();
@@ -17,14 +18,15 @@ namespace Game
         {
             UpdateVisual();
         }
-        void OnEnable()
+        private void OnEnable()
         {
             UnitActionSystem.Instance.OnSelectUnitChange += UnitActionSystem_OnSelectUnitChange;
         }
-        void OnDisable()
+        private void OnDisable()
         {
             UnitActionSystem.Instance.OnSelectUnitChange -= UnitActionSystem_OnSelectUnitChange;
         }
+        #endregion
 
         private void UnitActionSystem_OnSelectUnitChange(object sender, EventArgs eventArgs)
         {

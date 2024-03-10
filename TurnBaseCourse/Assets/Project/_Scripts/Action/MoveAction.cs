@@ -7,7 +7,9 @@ namespace Game
 {
     public class MoveAction : BaseAction
     {
-        [SerializeField] private Animator _unitAnimator;
+        public event EventHandler OnStartMoving;
+        public event EventHandler OnStopMoving;
+
         private float DISTANCE_TO_STOP = 0.1f;
         private Vector3 _targetPosition;
         private float _moveSpeed;
@@ -28,14 +30,12 @@ namespace Game
 
             if (distance > 0.1f)
             {
-                _unitAnimator.SetBool("Walk", true);
                 MoveHandler(moveDirection);
             }
             else
             {
-                _unitAnimator.SetBool("Walk", false);
-                _isActive = false;
-                OnActionComplete?.Invoke();
+                OnStopMoving?.Invoke(this, EventArgs.Empty);
+                ActionComplete();
             }
 
             
@@ -59,21 +59,20 @@ namespace Game
         }
         #endregion
 
+        #region Override functions
         public override void TakeAction(GridPosition targetPos, Action onComplete)
         {
-            OnActionComplete += onComplete;
-            _isActive = true;
+            ActionStart(onComplete);
             _targetPosition = LevelGrid.Instance.GetWorldPosition(targetPos);
+            OnStartMoving?.Invoke(this, EventArgs.Empty);
         }
-
-
         public override List<GridPosition> GetValidGridPositionList()
         {
             List<GridPosition> validGridPositionList = new List<GridPosition>();
 
             GridPosition unitGridPosition = _unit.GetCurrentGridPosition();
 
-            int maxMoveDistance = 1;
+            int maxMoveDistance = 10;
             for (int x = -maxMoveDistance; x <= maxMoveDistance; x++)
             {
                 for (int z = -maxMoveDistance; z <= maxMoveDistance; z++)
@@ -89,8 +88,14 @@ namespace Game
             }
             return validGridPositionList;
         }
+        public override string GetActionName()
+        {
+            return "Move";
+        }
+        #endregion
 
-        public bool IsGridPositionValid(GridPosition testGridPosition)
+        #region Support
+        private bool IsGridPositionValid(GridPosition testGridPosition)
         {
             GridPosition unitGridPosition = _unit.GetCurrentGridPosition();
 
@@ -103,10 +108,6 @@ namespace Game
             }
             return true;
         }
-
-        public override string GetActionName()
-        {
-            return "Move";
-        }
+        #endregion
     }
 }
