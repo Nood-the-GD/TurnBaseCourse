@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NOOD;
@@ -7,6 +8,7 @@ namespace Game
 {
     public class LevelGrid : MonoBehaviorInstance<LevelGrid>
     {
+        public event EventHandler OnAnyUnitMoveGridPosition;
         [SerializeField] private Transform _debugPref;
         private GridSystem _gridSystem;
         private int _width, _height;
@@ -56,6 +58,7 @@ namespace Game
         {
             RemoveUnitAtGridPosition(from, unit);
             AddUnitAtGridPosition(to, unit);
+            OnAnyUnitMoveGridPosition?.Invoke(this, EventArgs.Empty);
         }
         public bool HasAnyUnitOnGridPosition(GridPosition positionStruct)
         {

@@ -9,6 +9,7 @@ namespace Game
     {
         #region Events
         public static event EventHandler OnAnyActionStarted;
+        public static event EventHandler OnAnyActionComplete;
         #endregion
 
         #region Variables
@@ -31,7 +32,8 @@ namespace Game
         protected void  ActionComplete()
         {
             _isActive = false;
-            OnActionComplete?.Invoke(); 
+            OnActionComplete?.Invoke();
+            OnAnyActionComplete?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -50,6 +52,10 @@ namespace Game
         public virtual int GetActionPointCost()
         {
             return 1;
+        }
+        public Unit GetUnit()
+        {
+            return _unit;
         }
         #endregion
     }

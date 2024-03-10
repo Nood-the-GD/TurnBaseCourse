@@ -7,6 +7,7 @@ namespace Game
 {
     public class MoveAction : BaseAction
     {
+        #region Variables
         public event EventHandler OnStartMoving;
         public event EventHandler OnStopMoving;
 
@@ -14,6 +15,8 @@ namespace Game
         private Vector3 _targetPosition;
         private float _moveSpeed;
         private float _rotateSpeed;
+        private int _maxMoveDistance = 4;
+        #endregion
 
         #region Unity functions
         protected override void Awake()
@@ -28,7 +31,7 @@ namespace Game
             float distance = Vector3.Distance(this.transform.position, _targetPosition);
             Vector3 moveDirection = (_targetPosition - transform.position).normalized;
 
-            if (distance > 0.1f)
+            if (distance > DISTANCE_TO_STOP)
             {
                 MoveHandler(moveDirection);
             }
@@ -62,9 +65,9 @@ namespace Game
         #region Override functions
         public override void TakeAction(GridPosition targetPos, Action onComplete)
         {
-            ActionStart(onComplete);
             _targetPosition = LevelGrid.Instance.GetWorldPosition(targetPos);
             OnStartMoving?.Invoke(this, EventArgs.Empty);
+            ActionStart(onComplete);
         }
         public override List<GridPosition> GetValidGridPositionList()
         {
@@ -72,10 +75,9 @@ namespace Game
 
             GridPosition unitGridPosition = _unit.GetCurrentGridPosition();
 
-            int maxMoveDistance = 10;
-            for (int x = -maxMoveDistance; x <= maxMoveDistance; x++)
+            for (int x = -_maxMoveDistance; x <= _maxMoveDistance; x++)
             {
-                for (int z = -maxMoveDistance; z <= maxMoveDistance; z++)
+                for (int z = -_maxMoveDistance; z <= _maxMoveDistance; z++)
                 {
                     GridPosition offSetGridPosition = new GridPosition(x, z);
                     GridPosition testGridPosition = unitGridPosition + offSetGridPosition;

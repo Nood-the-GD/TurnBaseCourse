@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NOOD;
@@ -33,8 +34,30 @@ namespace Game
                 }
             }
             HideAllGridPosition();
+
+            UnitActionSystem.Instance.OnSelectActionChange += UnitActionSystem_OnSelectActionChangeHandler;
+            UnitActionSystem.Instance.OnSelectUnitChange += UnitActionSystem_OnSelectUnitChangeHandler;
+            LevelGrid.Instance.OnAnyUnitMoveGridPosition += LevelGrid_OnAnyUnitMoveGridPositionHandler;
+            UpdateGridVisual();
         }
-        private void Update()
+        void OnDestroy()
+        {
+            UnitActionSystem.Instance.OnSelectActionChange -= UnitActionSystem_OnSelectActionChangeHandler;
+            UnitActionSystem.Instance.OnSelectUnitChange -= UnitActionSystem_OnSelectUnitChangeHandler;
+            LevelGrid.Instance.OnAnyUnitMoveGridPosition -= LevelGrid_OnAnyUnitMoveGridPositionHandler;
+        }
+        #endregion
+
+        #region Event functions
+        private void UnitActionSystem_OnSelectActionChangeHandler(object sender, EventArgs eventArgs)
+        {
+            UpdateGridVisual();
+        }
+        private void UnitActionSystem_OnSelectUnitChangeHandler(object sender, EventArgs eventArgs)
+        {
+            UpdateGridVisual();
+        }
+        private void LevelGrid_OnAnyUnitMoveGridPositionHandler(object sender, EventArgs eventArgs)
         {
             UpdateGridVisual();
         }

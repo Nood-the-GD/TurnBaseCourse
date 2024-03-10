@@ -49,8 +49,10 @@ namespace Game
             if (newGridPosition != _gridPosition)
             {
                 // Unit change grid position
-                LevelGrid.Instance.UnitMoveGridPosition(this, _gridPosition, newGridPosition);
+                GridPosition oldGridPosition = _gridPosition;
                 _gridPosition = newGridPosition;
+
+                LevelGrid.Instance.UnitMoveGridPosition(this, oldGridPosition, newGridPosition);
             }
         }
         private void OnDestroy()

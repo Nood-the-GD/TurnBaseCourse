@@ -99,6 +99,10 @@ namespace Game
         {
             this.transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * _rotateSpeed);
         }
+        public Unit GetTargetUnit()
+        {
+            return _targetUnit;
+        }
         #endregion
 
         #region Override functions
@@ -153,7 +157,6 @@ namespace Game
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
         {
             // Shoot
-            ActionStart(onActionComplete);
 
             _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
 
@@ -161,6 +164,8 @@ namespace Game
             float aimingStateTime = 1f;
             _stateTimer = aimingStateTime;
             _canShootBullet = true;
+
+            ActionStart(onActionComplete);
         }
         #endregion
     }
