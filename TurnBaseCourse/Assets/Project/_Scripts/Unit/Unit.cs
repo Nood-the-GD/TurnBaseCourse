@@ -12,6 +12,8 @@ namespace Game
         private const int ACTION_POINT_MAX = 2;
 
         public static event EventHandler OnAnyActionPointsChanged;
+        public static event EventHandler OnAnyUnitSpawned;
+        public static event EventHandler OnAnyUnitDestroyed;
 
         [SerializeField] private float _moveSpeed = 5;
         [SerializeField] private float _rotateSpeed = 10;
@@ -42,6 +44,7 @@ namespace Game
             _gridPosition = LevelGrid.Instance.GetGridPosition(this.transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
             _moveAction.SetMoveProperty(_moveSpeed, _rotateSpeed);
+            OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
         }
         private void Update()
         {
@@ -81,7 +84,6 @@ namespace Game
         {
             return _gridPosition;
         }
-
         public BaseAction[] GetBaseActionArray()
         {
             return _baseActionArray;
@@ -134,6 +136,7 @@ namespace Game
         {
             LevelGrid.Instance.RemoveUnitAtGridPosition(GetCurrentGridPosition(), this);
             Destroy(this.gameObject);
+            OnAnyUnitDestroyed?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

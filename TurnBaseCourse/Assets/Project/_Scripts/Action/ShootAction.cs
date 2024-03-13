@@ -103,6 +103,10 @@ namespace Game
         {
             return _targetUnit;
         }
+        public int GetRange()
+        {
+            return _maxShootDistance;
+        }
         #endregion
 
         #region Override functions

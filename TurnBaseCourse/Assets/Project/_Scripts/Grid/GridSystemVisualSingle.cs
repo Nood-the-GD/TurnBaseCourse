@@ -11,8 +11,9 @@ namespace Game
         #endregion
 
         #region Show Hide
-        public void Show()
+        public void Show(Material material)
         {
+            _meshRender.material = material;
             _meshRender.enabled = true;
         }
         public void Hide()

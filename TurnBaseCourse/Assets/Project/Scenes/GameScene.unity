@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -795,6 +795,50 @@ Transform:
   m_GameObject: {fileID: 355816811}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &397752813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 397752815}
+  - component: {fileID: 397752814}
+  m_Layer: 0
+  m_Name: UnitManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &397752814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397752813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a8f8363c927a1c49a53ea27512708be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &397752815
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397752813}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1580,7 +1624,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 775868059}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.42166984, y: -0.09415434, z: 0.044075668, w: 0.9007702}
+  m_LocalRotation: {x: 0.42166987, y: -0.09415435, z: 0.044075668, w: 0.9007702}
   m_LocalPosition: {x: 4.657936, y: 12.11986, z: -6.363846}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2579,6 +2623,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridSystemSingleVisualPrefab: {fileID: 1703012085550988864, guid: 2d32ee95eadc86d4688905be89cd1140,
     type: 3}
+  _gridVisualTypeMaterials:
+  - gidVisualType: 0
+    material: {fileID: 2100000, guid: 74dbc3db55a4dff40a0062452de49200, type: 2}
+  - gidVisualType: 1
+    material: {fileID: 2100000, guid: 0d3e07ad4d769ae4787c6a59ee9cf8b8, type: 2}
+  - gidVisualType: 2
+    material: {fileID: 2100000, guid: 2db85a2c5c93a5d4db35560da4080d0b, type: 2}
+  - gidVisualType: 4
+    material: {fileID: 2100000, guid: d06d534bbb677e7419b7fabc866708e4, type: 2}
+  - gidVisualType: 3
+    material: {fileID: 2100000, guid: cf247f5266a94f54582640aeb0bc2add, type: 2}
 --- !u!4 &1421475065
 Transform:
   m_ObjectHideFlags: 0
@@ -3156,6 +3211,7 @@ SceneRoots:
   - {fileID: 22185097}
   - {fileID: 226680636}
   - {fileID: 1479510070}
+  - {fileID: 397752815}
   - {fileID: 2111322743}
   - {fileID: 1022266350}
   - {fileID: 57738902}
