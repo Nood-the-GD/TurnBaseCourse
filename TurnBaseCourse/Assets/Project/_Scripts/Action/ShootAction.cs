@@ -24,12 +24,13 @@ namespace Game
 
         #region Variables
         [SerializeField] private int _damage = 40;
+        [SerializeField] private int _maxShootDistance = 7;
         private State _state;
-        private int _maxShootDistance = 7;
         private float _stateTimer;
         private Unit _targetUnit;
         private bool _canShootBullet;
         private float _rotateSpeed = 10f;
+        private List<Unit> _targetUnitList;
         #endregion
 
         #region Unity functions
@@ -107,18 +108,18 @@ namespace Game
         {
             return _maxShootDistance;
         }
-        #endregion
-
-        #region Override functions
-        public override string GetActionName()
+        /// <summary>
+        /// Get target count when stand at this gridPosition
+        /// </summary>
+        /// <param name="gridPosition">the gridPosition AI will stand</param>
+        /// <returns></returns>
+        public int GetTargetCountWhenStandAtGridPosition(GridPosition gridPosition)
         {
-            return "Shoot";
+            return GetValidGridPositionList(gridPosition).Count;
         }
-        public override List<GridPosition> GetValidGridPositionList()
+        public List<GridPosition> GetValidGridPositionList(GridPosition unitGridPosition)
         {
             List<GridPosition> validGridPositionList = new List<GridPosition>();
-
-            GridPosition unitGridPosition = _unit.GetCurrentGridPosition();
 
             for (int x = -_maxShootDistance; x <= _maxShootDistance; x++)
             {
@@ -157,7 +158,18 @@ namespace Game
             }
             return validGridPositionList;
         }
+        #endregion
 
+        #region Override functions
+        public override string GetActionName()
+        {
+            return "Shoot";
+        }
+        public override List<GridPosition> GetValidGridPositionList()
+        {
+            GridPosition unitGridPosition = _unit.GetCurrentGridPosition();
+            return GetValidGridPositionList(unitGridPosition);            
+        }
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
         {
             // Shoot
@@ -170,6 +182,21 @@ namespace Game
             _canShootBullet = true;
 
             ActionStart(onActionComplete);
+        }
+        /// <summary>
+        /// Create a EnemyAIAction with gridPosition is position of target unit
+        /// </summary>
+        /// <param name="gridPosition">position of target unit</param>
+        /// <returns></returns>
+        public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
+        {
+            Unit unit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+
+            return new EnemyAIAction
+            {
+                gridPosition = gridPosition,
+                actionValue = 200 - unit.GetCurrentHealth()
+            };
         }
         #endregion
     }

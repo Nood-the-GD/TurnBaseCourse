@@ -24,6 +24,7 @@ namespace Game
         private GridPosition _gridPosition;
         private MoveAction _moveAction;
         private SpinAction _spinAction;
+        private ShootAction _shootAction;
         private BaseAction[] _baseActionArray;
         private int _actionPoint = 2;
         #endregion
@@ -34,6 +35,7 @@ namespace Game
             _baseActionArray = this.GetComponents<BaseAction>();
             _moveAction = this.GetComponent<MoveAction>();
             _spinAction = this.GetComponent<SpinAction>();
+            _shootAction = this.GetComponent<ShootAction>();
             _healthSystem = this.GetComponent<HealthSystem>();
         }
         private void Start()
@@ -73,6 +75,10 @@ namespace Game
         {
             return this._spinAction;
         }
+        public ShootAction GetShootAction()
+        {
+            return this._shootAction;
+        }
         #endregion
 
         #region Support
@@ -99,6 +105,10 @@ namespace Game
         public Vector3 GetWorldPosition()
         {
             return this.transform.position;
+        }
+        public int GetCurrentHealth()
+        {
+            return _healthSystem.GetCurrentHealth();
         }
         #endregion
 

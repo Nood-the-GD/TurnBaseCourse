@@ -48,6 +48,14 @@ namespace Game
         {
             return 2;
         }
+        public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
+        {
+            return new EnemyAIAction
+            {
+                gridPosition = _unit.GetCurrentGridPosition(),
+                actionValue = 0
+            };
+        }
         #endregion
     }
 }

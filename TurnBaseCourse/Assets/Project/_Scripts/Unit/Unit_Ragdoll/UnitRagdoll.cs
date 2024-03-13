@@ -12,7 +12,6 @@ namespace Game
         {
             MathAllChildTransform(originalRootBone, _ragdollRootBone);
             ApplyExplosionToRagdoll(_ragdollRootBone, 1000f, explosionPos, 10f);
-            Debug.Log(explosionPos);
         }
 
         private void MathAllChildTransform(Transform root, Transform clone)

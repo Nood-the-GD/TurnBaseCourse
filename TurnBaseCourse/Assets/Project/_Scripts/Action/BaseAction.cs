@@ -41,6 +41,7 @@ namespace Game
         public abstract string GetActionName();
         public abstract void TakeAction(GridPosition gridPosition, Action onActionComplete);
         public abstract List<GridPosition> GetValidGridPositionList();
+        public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
         #endregion
 
         #region Public functions
@@ -58,5 +59,39 @@ namespace Game
             return _unit;
         }
         #endregion
+
+        #region AI
+        /// <summary>
+        /// Get best action at gridPosition that return the best result in the GetValidGridPositionList()
+        /// </summary>
+        /// <returns></returns>
+        public EnemyAIAction GetBestAIAction()
+        {
+            List<EnemyAIAction> enemyAIActionList = new List<EnemyAIAction>();
+            List<GridPosition> validGridPositionList = GetValidGridPositionList();
+
+            foreach(GridPosition gridPosition in validGridPositionList)
+            {
+                EnemyAIAction enemyAIAction = GetEnemyAIAction(gridPosition);
+                enemyAIActionList.Add(enemyAIAction);
+            }
+
+            if(enemyAIActionList.Count > 0)
+            {
+                enemyAIActionList.Sort((EnemyAIAction a, EnemyAIAction b) => b.actionValue - a.actionValue);
+                return enemyAIActionList[0];
+            }
+            else
+            {
+                // No possible action
+                return null;
+            }
+        }
+        #endregion
     }
 }
+
+
+
+
+

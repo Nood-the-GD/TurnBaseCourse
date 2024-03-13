@@ -1,29 +1,32 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using TMPro;
+using NOOD;
 using UnityEngine;
 
 namespace Game
 {
-    public class UnitManager : MonoBehaviour
+    public class UnitManager : MonoBehaviorInstance<UnitManager>
     {
         private List<Unit> _unitList;
         private List<Unit> _friendUnitList;
         private List<Unit> _enemyUnitList;
 
         #region Unit functions
-        private void Awake()
+        protected override void ChildAwake()
         {
             _unitList = new List<Unit>();
             _friendUnitList = new List<Unit>();
             _enemyUnitList = new List<Unit>();
+            Unit.OnAnyUnitSpawned += Unit_OnAnyUnitSpawnedHandler;
+            Unit.OnAnyUnitDestroyed += Unit_OnAnyUnitDestroyedHandler;
         }
         private void Start()
         {
-            Unit.OnAnyUnitSpawned += Unit_OnAnyUnitSpawnedHandler;
-            Unit.OnAnyUnitDestroyed += Unit_OnAnyUnitDestroyedHandler;
+        }
+        private void OnDestroy()
+        {
+            Unit.OnAnyUnitSpawned -= Unit_OnAnyUnitSpawnedHandler;
+            Unit.OnAnyUnitDestroyed -= Unit_OnAnyUnitDestroyedHandler;
         }
         #endregion
 
@@ -55,5 +58,20 @@ namespace Game
             _unitList.Remove(unit);
         }
         #endregion
+
+        #region Get
+        public List<Unit> GetUnitList()
+        {
+            return _unitList;
+        }
+        public List<Unit> GetFriendlyUnitList()
+        {
+            return _friendUnitList;
+        }
+        public List<Unit> GetEnemyUnitList()
+        {
+            return _enemyUnitList;
+        }
+        #endregion 
     }
 }

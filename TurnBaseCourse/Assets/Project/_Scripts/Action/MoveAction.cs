@@ -94,6 +94,16 @@ namespace Game
         {
             return "Move";
         }
+        public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
+        {
+            int targetCountAtGridPosition = _unit.GetShootAction().GetTargetCountWhenStandAtGridPosition(gridPosition);
+
+            return new EnemyAIAction
+            {
+                gridPosition = gridPosition,
+                actionValue = targetCountAtGridPosition * 10
+            };
+        }
         #endregion
 
         #region Support

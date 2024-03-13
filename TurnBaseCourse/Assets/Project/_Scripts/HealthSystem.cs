@@ -17,9 +17,11 @@ namespace Game
         public event EventHandler OnDamage;
         #endregion
 
+        #region Variables
         [SerializeField] private int _health = 100;
         private int _healthMax = 100;
         private Vector3 _shotPosition;
+        #endregion
 
         #region Unity functions
         private void Start()
@@ -60,6 +62,10 @@ namespace Game
         public float GetHealthNormalized()
         {
             return (float) _health / _healthMax;
+        }
+        public int GetCurrentHealth()
+        {
+            return _health;
         }
         #endregion
     }
