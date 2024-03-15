@@ -8,12 +8,14 @@ namespace Game
 {
     public class Unit : MonoBehaviour
     {
-        #region Variable
-        private const int ACTION_POINT_MAX = 2;
-
+        #region Events
         public static event EventHandler OnAnyActionPointsChanged;
         public static event EventHandler OnAnyUnitSpawned;
         public static event EventHandler OnAnyUnitDestroyed;
+        #endregion
+
+        #region Variable
+        private const int ACTION_POINT_MAX = 2;
 
         [SerializeField] private float _moveSpeed = 5;
         [SerializeField] private float _rotateSpeed = 10;
@@ -38,11 +40,13 @@ namespace Game
             _shootAction = this.GetComponent<ShootAction>();
             _healthSystem = this.GetComponent<HealthSystem>();
         }
-        private void Start()
+        private void OnEnable()
         {
             TurnSystem.Instance.OnTurnChange += TurnSystem_OnTurnChangeHandler;
             _healthSystem.OnDead += HealthSystem_OnDeadHandler;
-
+        }
+        private void Start()
+        {
             _gridPosition = LevelGrid.Instance.GetGridPosition(this.transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
             _moveAction.SetMoveProperty(_moveSpeed, _rotateSpeed);
@@ -60,9 +64,14 @@ namespace Game
                 LevelGrid.Instance.UnitMoveGridPosition(this, oldGridPosition, newGridPosition);
             }
         }
-        private void OnDestroy()
+        private void OnDisable()
         {
             TurnSystem.Instance.OnTurnChange -= TurnSystem_OnTurnChangeHandler;
+            _healthSystem.OnDead -= HealthSystem_OnDeadHandler;
+        }
+        private void OnDestroy()
+        {
+            
         }
         #endregion
 

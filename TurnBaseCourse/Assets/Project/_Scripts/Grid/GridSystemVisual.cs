@@ -35,6 +35,12 @@ namespace Game
         #endregion
 
         #region Unity Functions
+        private void OnEnable()
+        {
+            UnitActionSystem.Instance.OnSelectActionChange += UnitActionSystem_OnSelectActionChangeHandler;
+            UnitActionSystem.Instance.OnSelectUnitChange += UnitActionSystem_OnSelectUnitChangeHandler;
+            LevelGrid.Instance.OnAnyUnitMoveGridPosition += LevelGrid_OnAnyUnitMoveGridPositionHandler;
+        }
         private void Start()
         {
             _gridSystemVisualSingleArray = new GridSystemVisualSingle[
@@ -53,16 +59,11 @@ namespace Game
             }
             HideAllGridPosition();
 
-            UnitActionSystem.Instance.OnSelectActionChange += UnitActionSystem_OnSelectActionChangeHandler;
-            UnitActionSystem.Instance.OnSelectUnitChange += UnitActionSystem_OnSelectUnitChangeHandler;
-            LevelGrid.Instance.OnAnyUnitMoveGridPosition += LevelGrid_OnAnyUnitMoveGridPositionHandler;
             UpdateGridVisual();
         }
-        void OnDestroy()
+        private void OnDisable()
         {
-            UnitActionSystem.Instance.OnSelectActionChange -= UnitActionSystem_OnSelectActionChangeHandler;
-            UnitActionSystem.Instance.OnSelectUnitChange -= UnitActionSystem_OnSelectUnitChangeHandler;
-            LevelGrid.Instance.OnAnyUnitMoveGridPosition -= LevelGrid_OnAnyUnitMoveGridPositionHandler;
+            NoodyCustomCode.UnSubscribeAllEvent<UnitActionSystem>(this);
         }
         #endregion
 
