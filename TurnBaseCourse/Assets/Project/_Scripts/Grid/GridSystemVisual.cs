@@ -117,7 +117,9 @@ namespace Game
             {
                 for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
                 {
-                    _gridSystemVisualSingleArray[x, z].Hide();
+                    GridSystemVisualSingle gridSystemVisualSingle = GetGridSystemVisualSingle(new GridPosition(x, z));
+                    if (gridSystemVisualSingle == null) continue;
+                    gridSystemVisualSingle.Hide();
                 }
             }
         }
@@ -126,7 +128,7 @@ namespace Game
             foreach(var position in gridPositions)
             {
 
-                GetGridSystemVisualSingle(position).Show(GetGridVisualTypeMaterial(gridVisualType)); 
+                GetGridSystemVisualSingle(position)?.Show(GetGridVisualTypeMaterial(gridVisualType)); 
             }
         }
         private void ShowGridPositionRange(GridPosition gridPosition, int range, GridVisualType gridVisualType)
@@ -160,6 +162,7 @@ namespace Game
         #region Get 
         public GridSystemVisualSingle GetGridSystemVisualSingle(GridPosition gridPosition)
         {
+            if (_gridSystemVisualSingleArray == null) return null;
             return _gridSystemVisualSingleArray[gridPosition.X, gridPosition.Z];
         }
         private Material GetGridVisualTypeMaterial(GridVisualType gridVisualType)

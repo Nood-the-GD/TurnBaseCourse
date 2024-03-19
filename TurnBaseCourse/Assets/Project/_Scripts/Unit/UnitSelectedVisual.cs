@@ -1,4 +1,5 @@
 using System;
+using NOOD;
 using UnityEngine;
 
 namespace Game
@@ -24,7 +25,7 @@ namespace Game
         }
         private void OnDisable()
         {
-            UnitActionSystem.Instance.OnSelectUnitChange -= UnitActionSystem_OnSelectUnitChange;
+            NoodyCustomCode.UnSubscribeAllEvent<UnitActionSystem>(this);
         }
         #endregion
 

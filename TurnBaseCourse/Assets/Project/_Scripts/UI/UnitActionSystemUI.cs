@@ -17,12 +17,15 @@ namespace Game
         private List<ActionButtonUI> _actionButtonUIs = new List<ActionButtonUI>();
 
         #region Unity functions
-        private void Start()
+        private void OnEnable()
         {
             UnitActionSystem.Instance.OnSelectUnitChange += UnitActionSystem_OnSelectUnitChangeHandler;
             UnitActionSystem.Instance.OnSelectActionChange += UnitActionSystem_OnSelectActionChangeHandler;
             UnitActionSystem.Instance.OnActionStarted += UnitActionSystem_OnActionStartedHandler;
             Unit.OnAnyActionPointsChanged += Unit_OnAnyActionPointsChanged;
+        }
+        private void Start()
+        {
             
             CreateUnitActionButtons();
             UpdateSelectionVisual();

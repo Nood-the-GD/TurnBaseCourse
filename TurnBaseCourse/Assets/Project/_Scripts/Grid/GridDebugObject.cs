@@ -8,14 +8,14 @@ namespace Game
     public class GridDebugObject : MonoBehaviour
     {
         [SerializeField] private TextMeshPro _debugText;
-        private GridObject _gridObject;
+        private object _gridObject;
 
-        public void SetGridObject(GridObject gridObject)
+        public virtual void SetGridObject(object gridObject)
         {
             this._gridObject = gridObject;
-            UpdateGridData();
         }
-        public void UpdateGridData()
+
+        protected virtual void Update()
         {
             _debugText.text = _gridObject.ToString();
         }

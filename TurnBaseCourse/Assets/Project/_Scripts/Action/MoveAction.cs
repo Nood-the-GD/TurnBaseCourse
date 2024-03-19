@@ -96,7 +96,7 @@ namespace Game
         }
         public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
         {
-            int targetCountAtGridPosition = _unit.GetShootAction().GetTargetCountWhenStandAtGridPosition(gridPosition);
+            int targetCountAtGridPosition = _unit.GetAction<ShootAction>().GetTargetCountWhenStandAtGridPosition(gridPosition);
 
             return new EnemyAIAction
             {

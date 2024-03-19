@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NOOD;
 using UnityEngine;
 using static Game.HealthSystem;
 
@@ -24,9 +25,6 @@ namespace Game
         private HealthSystem _healthSystem;
 
         private GridPosition _gridPosition;
-        private MoveAction _moveAction;
-        private SpinAction _spinAction;
-        private ShootAction _shootAction;
         private BaseAction[] _baseActionArray;
         private int _actionPoint = 2;
         #endregion
@@ -35,9 +33,6 @@ namespace Game
         private void Awake()
         {
             _baseActionArray = this.GetComponents<BaseAction>();
-            _moveAction = this.GetComponent<MoveAction>();
-            _spinAction = this.GetComponent<SpinAction>();
-            _shootAction = this.GetComponent<ShootAction>();
             _healthSystem = this.GetComponent<HealthSystem>();
         }
         private void OnEnable()
@@ -49,7 +44,7 @@ namespace Game
         {
             _gridPosition = LevelGrid.Instance.GetGridPosition(this.transform.position);
             LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
-            _moveAction.SetMoveProperty(_moveSpeed, _rotateSpeed);
+            GetAction<MoveAction>().SetMoveProperty(_moveSpeed, _rotateSpeed);
             OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
         }
         private void Update()
@@ -66,7 +61,7 @@ namespace Game
         }
         private void OnDisable()
         {
-            TurnSystem.Instance.OnTurnChange -= TurnSystem_OnTurnChangeHandler;
+            NoodyCustomCode.UnSubscribeAllEvent<TurnSystem>(this);
             _healthSystem.OnDead -= HealthSystem_OnDeadHandler;
         }
         private void OnDestroy()
@@ -76,17 +71,16 @@ namespace Game
         #endregion
 
         #region Actions
-        public MoveAction GetMoveAction()
+        public T GetAction<T>() where T : BaseAction
         {
-            return this._moveAction;
-        }
-        public SpinAction GetSpinAction()
-        {
-            return this._spinAction;
-        }
-        public ShootAction GetShootAction()
-        {
-            return this._shootAction;
+            foreach(BaseAction baseAction in _baseActionArray)
+            {
+                if(baseAction is T)
+                {
+                    return (T)baseAction;
+                }
+            }
+            return null;
         }
         #endregion
 

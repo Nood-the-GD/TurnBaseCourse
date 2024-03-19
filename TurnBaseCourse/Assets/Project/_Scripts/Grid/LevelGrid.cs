@@ -10,14 +10,14 @@ namespace Game
     {
         public event EventHandler OnAnyUnitMoveGridPosition;
         [SerializeField] private Transform _debugPref;
-        private GridSystem _gridSystem;
+        private GridSystem<GridObject> _gridSystem;
         private int _width, _height;
 
         protected override void ChildAwake()
         {
             _width = 10;
             _height = 10;
-            _gridSystem = new GridSystem(_width, _height, 2f);
+            _gridSystem = new GridSystem<GridObject>(_width, _height, 2f, (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
         }
         IEnumerator Start()
         {
@@ -46,13 +46,11 @@ namespace Game
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPositionStruct);
             gridObject.AddUnit(unit);
-            _gridSystem.UpdateGridDebugData();
         }
         public void RemoveUnitAtGridPosition(GridPosition gridPositionStruct, Unit unit)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPositionStruct);
             gridObject.RemoveUnit(unit);
-            _gridSystem.UpdateGridDebugData();
         }
         public void UnitMoveGridPosition(Unit unit, GridPosition from, GridPosition to)
         {

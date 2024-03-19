@@ -4,11 +4,11 @@ namespace Game
 {
     public class GridObject
     {
-        private GridSystem _gridSystem;
+        private GridSystem<GridObject> _gridSystem;
         private GridPosition _gridPositionStruct;
         private List<Unit> _unitList = new List<Unit>();
 
-        public GridObject(GridSystem gridSystem, GridPosition gridPositionStruct)
+        public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPositionStruct)
         {
             this._gridSystem = gridSystem;
             this._gridPositionStruct = gridPositionStruct;
