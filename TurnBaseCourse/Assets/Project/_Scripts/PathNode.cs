@@ -42,9 +42,28 @@ namespace Game
         {
             _hCost = hCost;
         }
-        public void SetFCost(int fCost)
+        public void CalculateFCost()
         {
-            _fCost = fCost;
+            _fCost = _gCost + _hCost;
+        }
+
+        public void ResetCameFromPathNode()
+        {
+            _parent = null;
+        }
+
+        public GridPosition GetGridPosition()
+        {
+            return _gridPosition;
+        }
+
+        public void SetCameFromPathNode(PathNode pathNode)
+        {
+            _parent = pathNode;
+        }
+        public PathNode GetCameFromPathNode()
+        {
+            return _parent;
         }
     }
 }

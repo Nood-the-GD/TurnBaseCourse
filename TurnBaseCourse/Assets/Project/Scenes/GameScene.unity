@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbde143066c248b428b02fc4cd6cabca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
 --- !u!4 &22185097
 Transform:
   m_ObjectHideFlags: 0
@@ -857,6 +858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cea6e9cca8e2b349ad761cb5c0ab550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
   _debugPref: {fileID: 3282042347056164404, guid: a9d7a752931b54a4c8f39ce97a1f574b,
     type: 3}
 --- !u!4 &355816813
@@ -903,6 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a8f8363c927a1c49a53ea27512708be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
 --- !u!4 &397752815
 Transform:
   m_ObjectHideFlags: 0
@@ -1789,6 +1792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae2d2cb64bee744a99b75298f451b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -2694,6 +2698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dd6ce41117b8cb4a9d50d8b09c48c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
   _gridSystemSingleVisualPrefab: {fileID: 1703012085550988864, guid: 2d32ee95eadc86d4688905be89cd1140,
     type: 3}
   _gridVisualTypeMaterials:
@@ -2751,6 +2756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6216d1d778e2ab046835cea7f0c170c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
   _selectedUnit: {fileID: 965204293}
   _unitLayer:
     serializedVersion: 2
@@ -2807,6 +2813,53 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479510068}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1503332814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1503332816}
+  - component: {fileID: 1503332815}
+  m_Layer: 0
+  m_Name: PathFinding
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1503332815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503332814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab35f6758f66414f80a7bab506fb6df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
+  _gridDebugObjectPref: {fileID: 3282042347056164404, guid: cff4e497ef7bf6848835936ec19a7f26,
+    type: 3}
+--- !u!4 &1503332816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503332814}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -3285,6 +3338,7 @@ SceneRoots:
   - {fileID: 226680636}
   - {fileID: 1479510070}
   - {fileID: 397752815}
+  - {fileID: 1503332816}
   - {fileID: 2111322743}
   - {fileID: 1022266350}
   - {fileID: 57738902}

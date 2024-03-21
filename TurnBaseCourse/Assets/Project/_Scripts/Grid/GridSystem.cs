@@ -45,6 +45,15 @@ namespace Game
             );
         }
 
+        public int GetWidth()
+        {
+            return _width;
+        }
+        public int GetHeight()
+        {
+            return _height;
+        }
+
         public void CreateDebugObjects(Transform debugPref)
         {
             for (int x = 0; x < _width; x++)
