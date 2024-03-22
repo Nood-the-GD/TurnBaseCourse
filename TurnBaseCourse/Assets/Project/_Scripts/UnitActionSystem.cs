@@ -69,7 +69,7 @@ namespace Game
                 if (MouseWorld.TryGetSelectedObjectWithLayer(_unitLayer, out GameObject go))
                 {
                     Unit unit = go.GetComponent<Unit>();
-                    if(unit.IsEnemy())
+                   if(unit.IsEnemy())
                     {
                         return false;
                     }

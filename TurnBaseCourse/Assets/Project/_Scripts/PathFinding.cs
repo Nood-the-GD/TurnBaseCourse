@@ -86,7 +86,7 @@ namespace Game
         #endregion
 
         #region Main functions
-        public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition)
+        public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength)
         {
             List<PathNode> openList = new List<PathNode>();
             List<PathNode> closedList = new List<PathNode>();
@@ -121,6 +121,7 @@ namespace Game
                 if(currentNode == endNode)
                 {
                     // Reach final node
+                    pathLength = endNode.GetFCost();
                     return CalculatePath(endNode);
                 }
 
@@ -155,6 +156,8 @@ namespace Game
                     }   
                 }
             }
+
+            pathLength = 0;
             return null;
         }
         #endregion
@@ -181,6 +184,19 @@ namespace Game
             int zDistance = Mathf.Abs(gridPosition.Z);
             int remaining = Mathf.Abs(xDistance - zDistance);
             return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, zDistance) + MOVE_STRAIGHT_COST * remaining;
+        }
+        public bool IsWalkableGridPosition(GridPosition gridPosition)
+        {
+            return _gridSystemPathNode.GetGridObject(gridPosition).GetIsWalkable();
+        }
+        public bool HasPath(GridPosition startPos, GridPosition endPos)
+        {
+            return FindPath(startPos, endPos, out int pathLength) != null;
+        }
+        public int GetPathLength(GridPosition startPos, GridPosition endPos)
+        {
+            FindPath(startPos, endPos, out int length);
+            return length;
         }
         #endregion
 

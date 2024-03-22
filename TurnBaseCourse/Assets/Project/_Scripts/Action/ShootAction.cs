@@ -25,6 +25,7 @@ namespace Game
         #region Variables
         [SerializeField] private int _damage = 40;
         [SerializeField] private int _maxShootDistance = 7;
+        [SerializeField] private LayerMask _obstacleLayerMask;
         private State _state;
         private float _stateTimer;
         private Unit _targetUnit;
@@ -117,6 +118,11 @@ namespace Game
         {
             return GetValidGridPositionList(gridPosition).Count;
         }
+        /// <summary>
+        /// Return valid grid position list that can shoot from this unit grid position
+        /// </summary>
+        /// <param name="unitGridPosition"></param>
+        /// <returns></returns>
         public List<GridPosition> GetValidGridPositionList(GridPosition unitGridPosition)
         {
             List<GridPosition> validGridPositionList = new List<GridPosition>();
@@ -126,9 +132,9 @@ namespace Game
                 for (int z = -_maxShootDistance; z <= _maxShootDistance; z++)
                 {
                     GridPosition offSetGridPosition = new GridPosition(x, z);
-                    GridPosition testGridPosition = unitGridPosition + offSetGridPosition;
+                    GridPosition testingGridPosition = unitGridPosition + offSetGridPosition;
 
-                    if(!LevelGrid.Instance.IsValidGrid(testGridPosition))
+                    if(!LevelGrid.Instance.IsValidGrid(testingGridPosition))
                     {
                         // Grid is not valid in this current level
                         continue;
@@ -139,13 +145,13 @@ namespace Game
                         continue;
                     }
 
-                    if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                    if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testingGridPosition))
                     {
                         // Grid is empty, no unit
                         continue;
                     }
 
-                    Unit unit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+                    Unit unit = LevelGrid.Instance.GetUnitAtGridPosition(testingGridPosition);
 
                     if(unit.IsEnemy() == _unit.IsEnemy())
                     {
@@ -153,7 +159,16 @@ namespace Game
                         continue;
                     }
 
-                    validGridPositionList.Add(testGridPosition);
+                    Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
+                    Vector3 shootDir = (testingGridPosition.GetWorldPosition() - unitWorldPosition).normalized;
+                    float unitShoulderHeight = 1.7f;
+                    if(Physics.Raycast(unitWorldPosition + Vector3.up * unitShoulderHeight, shootDir, Vector3.Distance(unitWorldPosition, testingGridPosition.GetWorldPosition()), _obstacleLayerMask))
+                    {
+                        // Block by obstacle
+                        continue;
+                    }
+
+                    validGridPositionList.Add(testingGridPosition);
                 }
             }
             return validGridPositionList;

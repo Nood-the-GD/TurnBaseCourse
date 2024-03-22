@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game
@@ -12,37 +13,36 @@ namespace Game
         public event EventHandler OnStopMoving;
 
         private float DISTANCE_TO_STOP = 0.1f;
-        private Vector3 _targetPosition;
         private float _moveSpeed;
         private float _rotateSpeed;
         private int _maxMoveDistance = 4;
+        private List<Vector3> _targetPositionList;
+        private int _currentPositionIndex;
         #endregion
 
         #region Unity functions
-        protected override void Awake()
-        {
-            base.Awake();
-            _targetPosition = this.transform.position;
-        }
         private void Update()
         {
             if (!_isActive) return;
 
-            float distance = Vector3.Distance(this.transform.position, _targetPosition);
-            Vector3 moveDirection = (_targetPosition - transform.position).normalized;
+            Vector3 targetPosition = _targetPositionList[_currentPositionIndex];
+            float distance = Vector3.Distance(this.transform.position, targetPosition);
+            Vector3 moveDirection = (targetPosition - transform.position).normalized;
 
+            RotateHandler(moveDirection);
             if (distance > DISTANCE_TO_STOP)
             {
                 MoveHandler(moveDirection);
             }
             else
             {
-                OnStopMoving?.Invoke(this, EventArgs.Empty);
-                ActionComplete();
+                _currentPositionIndex++;
+                if(_currentPositionIndex >= _targetPositionList.Count)
+                {
+                    OnStopMoving?.Invoke(this, EventArgs.Empty);
+                    ActionComplete();
+                }
             }
-
-            
-            RotateHandler(moveDirection);
         }
         #endregion
 
@@ -65,7 +65,11 @@ namespace Game
         #region Override functions
         public override void TakeAction(GridPosition targetPos, Action onComplete)
         {
-            _targetPosition = LevelGrid.Instance.GetWorldPosition(targetPos);
+            List<GridPosition> path = PathFinding.Instance.FindPath(_unit.GetCurrentGridPosition(), targetPos, out int pathLength);
+
+            _currentPositionIndex = 0;
+
+            _targetPositionList = path.Select(x => x.GetWorldPosition()).ToList();
             OnStartMoving?.Invoke(this, EventArgs.Empty);
             ActionStart(onComplete);
         }
@@ -118,6 +122,14 @@ namespace Game
                 // Already has unit in this position
                 return false;
             }
+            if (!PathFinding.Instance.IsWalkableGridPosition(testGridPosition)) return false;
+            if (!PathFinding.Instance.HasPath(_unit.GetCurrentGridPosition(), testGridPosition)) return false;
+            int pathFindingDistanceMultipler = 10;
+            if(PathFinding.Instance.GetPathLength(_unit.GetCurrentGridPosition(), testGridPosition) > _maxMoveDistance * pathFindingDistanceMultipler) 
+            {
+                return false;
+            }
+
             return true;
         }
         #endregion

@@ -18,10 +18,8 @@ namespace Game
         {
             _gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
         }
-        IEnumerator Start()
+        void OnEnable()
         {
-            yield return new WaitForEndOfFrame();
-            // _gridSystem.CreateDebugObjects(_debugPref);
             PathFinding.Instance.Setup(_width, _height, _cellSize);
         }
 

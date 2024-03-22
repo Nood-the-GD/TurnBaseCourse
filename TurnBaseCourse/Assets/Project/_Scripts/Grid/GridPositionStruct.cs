@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 
 namespace Game
 {
@@ -30,6 +31,10 @@ namespace Game
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Z);
+        }
+        public UnityEngine.Vector3 GetWorldPosition()
+        {
+            return LevelGrid.Instance.GetWorldPosition(this);
         }
 
 
