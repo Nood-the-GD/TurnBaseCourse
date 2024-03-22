@@ -16,11 +16,8 @@ namespace Game
                 GridPosition startGridPosition = new GridPosition(0, 0);
 
                 List<GridPosition> path = PathFinding.Instance.FindPath(startGridPosition, mouseGriPosition);
-                Debug.Log(path.Count);
                 for (int i = 0; i < path.Count - 1; i++)
                 {
-                    Debug.Log(LevelGrid.Instance.GetWorldPosition(path[i]) != null);
-                    Debug.Log(i.ToString());
                     Debug.DrawLine(LevelGrid.Instance.GetWorldPosition(path[i]), LevelGrid.Instance.GetWorldPosition(path[i + 1]), Color.red, 10f);
                 }
             }

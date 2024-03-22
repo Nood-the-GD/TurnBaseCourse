@@ -10,19 +10,19 @@ namespace Game
     {
         public event EventHandler OnAnyUnitMoveGridPosition;
         [SerializeField] private Transform _debugPref;
+        [SerializeField] private int _width, _height;
+        [SerializeField] private float _cellSize;
         private GridSystem<GridObject> _gridSystem;
-        private int _width, _height;
 
         protected override void ChildAwake()
         {
-            _width = 10;
-            _height = 10;
-            _gridSystem = new GridSystem<GridObject>(_width, _height, 2f, (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
+            _gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, (GridSystem<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
         }
         IEnumerator Start()
         {
             yield return new WaitForEndOfFrame();
-            _gridSystem.CreateDebugObjects(_debugPref);
+            // _gridSystem.CreateDebugObjects(_debugPref);
+            PathFinding.Instance.Setup(_width, _height, _cellSize);
         }
 
         #region Grid Zone

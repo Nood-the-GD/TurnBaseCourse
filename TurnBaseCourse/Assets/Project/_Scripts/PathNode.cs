@@ -11,17 +11,14 @@ namespace Game
         private int _hCost;
         private int _fCost;
         private PathNode _parent;
+        private bool _isWalkable = true;
 
         public PathNode(GridPosition gridPosition)
         {
             _gridPosition = gridPosition;
         }
 
-        public override string ToString()
-        {
-            return _gridPosition.ToString();
-        }
-
+        #region Get
         public int GetGCost()
         {
             return _gCost;
@@ -34,6 +31,21 @@ namespace Game
         {
             return _fCost;
         }
+        public GridPosition GetGridPosition()
+        {
+            return _gridPosition;
+        }
+        public PathNode GetCameFromPathNode()
+        {
+            return _parent;
+        }
+        public bool GetIsWalkable()
+        {
+            return _isWalkable;
+        }
+        #endregion
+
+        #region Set
         public void SetGCost(int gCost)
         {
             _gCost = gCost;
@@ -42,28 +54,29 @@ namespace Game
         {
             _hCost = hCost;
         }
-        public void CalculateFCost()
-        {
-            _fCost = _gCost + _hCost;
-        }
-
-        public void ResetCameFromPathNode()
-        {
-            _parent = null;
-        }
-
-        public GridPosition GetGridPosition()
-        {
-            return _gridPosition;
-        }
-
         public void SetCameFromPathNode(PathNode pathNode)
         {
             _parent = pathNode;
         }
-        public PathNode GetCameFromPathNode()
+        public void SetIsWalkable(bool isWalkable)
         {
-            return _parent;
+            this._isWalkable = isWalkable; 
         }
+        #endregion
+
+        #region Support
+        public void CalculateFCost()
+        {
+            _fCost = _gCost + _hCost;
+        }
+        public void ResetCameFromPathNode()
+        {
+            _parent = null;
+        }
+        public override string ToString()
+        {
+            return _gridPosition.ToString();
+        }
+        #endregion
     }
 }
