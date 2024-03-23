@@ -14,6 +14,7 @@ namespace Game
         }
 
         #region Events
+        public static event EventHandler<OnShootEventArgs> OnAnyShoot;
         public event EventHandler<OnShootEventArgs> OnShoot;
         public class OnShootEventArgs:EventArgs
         {
@@ -26,6 +27,8 @@ namespace Game
         [SerializeField] private int _damage = 40;
         [SerializeField] private int _maxShootDistance = 7;
         [SerializeField] private LayerMask _obstacleLayerMask;
+        [SerializeField] private BulletScript _bulletPref;
+        [SerializeField] private Transform _shootPoint;
         private State _state;
         private float _stateTimer;
         private Unit _targetUnit;
@@ -90,12 +93,26 @@ namespace Game
         #region Support
         private void Shoot()
         {
+            OnAnyShoot?.Invoke(this, new OnShootEventArgs
+            {
+                targetUnit = _targetUnit,
+                shootingUnit = _unit
+            });
             OnShoot?.Invoke(this, new OnShootEventArgs
             {
                 targetUnit = _targetUnit,
                 shootingUnit = _unit
             });
-            _targetUnit.Damage(_damage);
+
+            BulletScript bulletScript = Instantiate<BulletScript>(_bulletPref, _shootPoint.position, Quaternion.identity);
+
+            Vector3 shootPos = _targetUnit.GetWorldPosition();
+            shootPos.y = bulletScript.transform.position.y;
+
+            bulletScript.Setup(shootPos);
+            Debug.Log(_shootPoint.position);
+
+            _targetUnit.Damage(_damage, shootPos);
         }
         private void RotateHandler(Vector3 moveDirection)
         {

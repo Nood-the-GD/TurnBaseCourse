@@ -32,5 +32,30 @@ namespace Game
                 return false;
             }
         }
+        public static bool IsTryGetSelectedObject(out GameObject gameObject)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, float.MaxValue))
+            {
+                gameObject = hitInfo.transform.gameObject;
+                return true;
+            }
+            else
+            {
+                gameObject = null;
+                return false;
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+

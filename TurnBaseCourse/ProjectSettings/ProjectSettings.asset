@@ -803,7 +803,10 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: IMPOSSIBLE_ODDS_LOGGING_EDITOR_INFO;IMPOSSIBLE_ODDS_LOGGING_INFO
+    Android: PROBUILDER_EXPERIMENTAL_FEATURES
+    Server: PROBUILDER_EXPERIMENTAL_FEATURES
+    Standalone: IMPOSSIBLE_ODDS_LOGGING_EDITOR_INFO;IMPOSSIBLE_ODDS_LOGGING_INFO;PROBUILDER_EXPERIMENTAL_FEATURES
+    iPhone: PROBUILDER_EXPERIMENTAL_FEATURES
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

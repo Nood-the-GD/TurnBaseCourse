@@ -101,9 +101,9 @@ namespace Game
         {
             return _actionPoint;
         }
-        public void Damage(int healthAmount)
+        public void Damage(int healthAmount, Vector3 damagePosition)
         {
-            _healthSystem.Damage(healthAmount);
+            _healthSystem.Damage(healthAmount, damagePosition);
         }
         public Vector3 GetWorldPosition()
         {

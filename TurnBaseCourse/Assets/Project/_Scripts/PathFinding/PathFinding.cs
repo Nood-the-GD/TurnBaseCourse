@@ -68,6 +68,10 @@ namespace Game
                     {
                         GetNode(x, z).SetIsWalkable(false);
                     }
+                    else
+                    {
+                        GetNode(x, z).SetIsWalkable(true);
+                    }
                 }
             }
         }
@@ -197,6 +201,10 @@ namespace Game
         {
             FindPath(startPos, endPos, out int length);
             return length;
+        }
+        public void UpdatePathFinding()
+        {
+            CheckWalkableForAllGridPosition();
         }
         #endregion
 

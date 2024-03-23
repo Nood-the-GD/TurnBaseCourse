@@ -26,14 +26,14 @@ namespace Game
         #region Unity functions
         private void Start()
         {
-            BulletScript.OnBulletSetTarget += BulletScript_OnBulletSetTargetHandler;
         }
         #endregion
 
         #region Damage
-        public void Damage(int damageAmount)
+        public void Damage(int damageAmount, Vector3 shotPosition)
         {
             _health -= damageAmount;
+            _shotPosition = shotPosition;
             OnDamage?.Invoke(this, EventArgs.Empty);
             if(_health <= 0) 
             {
@@ -51,10 +51,6 @@ namespace Game
         #endregion
 
         #region Event functions
-        private void BulletScript_OnBulletSetTargetHandler(object sender, OnBulletSetTargetEventArgs onBulletSetTarget)
-        {
-            _shotPosition = onBulletSetTarget.shootPos;
-        }
         #endregion
 
 

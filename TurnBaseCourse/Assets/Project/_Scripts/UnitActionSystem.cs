@@ -66,6 +66,8 @@ namespace Game
         {
             if(Input.GetMouseButtonDown(0))
             {
+                if (!MouseWorld.IsTryGetSelectedObject(out GameObject gameObject)) return false;
+                
                 if (MouseWorld.TryGetSelectedObjectWithLayer(_unitLayer, out GameObject go))
                 {
                     Unit unit = go.GetComponent<Unit>();

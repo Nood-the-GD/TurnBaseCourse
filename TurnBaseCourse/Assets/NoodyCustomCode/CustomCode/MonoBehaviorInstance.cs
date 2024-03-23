@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 namespace NOOD
@@ -16,7 +11,7 @@ namespace NOOD
         {
             get
             {
-                if (s_instance == null) TryGetInstance();
+                if (s_instance == null || s_instance.gameObject == null) TryGetInstance();
                 return s_instance;
             }
         }
@@ -25,13 +20,17 @@ namespace NOOD
         {
             if (s_instance != null && s_instance.gameObject != this.gameObject)
             {
+                // Already have an instance and that instance is this gameObject
                 Debug.LogError($"Exist 2 {typeof(T)} in the scene {this.gameObject.name} and {s_instance.gameObject.name}");
                 Destroy(this.gameObject);
             }
-            else
+
+            if (s_instance == null || s_instance.gameObject == null) 
             {
+                // Don't have any instance
                 TryGetInstance();
             }
+
             if(_dontDestroyOnLoad)
             {
                 DontDestroyOnLoad(s_instance.gameObject);
@@ -39,10 +38,9 @@ namespace NOOD
             ChildAwake();
         }
 
-        private static T TryGetInstance()
+        private static void TryGetInstance()
         {
             s_instance = GameObject.FindObjectOfType<T>();
-            return s_instance;
         }
 
         protected virtual void ChildAwake()
