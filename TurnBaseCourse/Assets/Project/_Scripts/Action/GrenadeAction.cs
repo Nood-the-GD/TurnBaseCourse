@@ -43,21 +43,11 @@ namespace Game
             {
                 for (int z = -_maxThrowDistance; z <= _maxThrowDistance; z++)
                 {
-                    GridPosition offSetGridPosition = new GridPosition(x, z);
+                    GridPosition offSetGridPosition = new GridPosition(x, z, 0);
                     GridPosition testingGridPosition = unitGridPosition + offSetGridPosition;
 
-                    if (!LevelGrid.Instance.IsValidGrid(testingGridPosition))
-                    {
-                        // Grid is not valid in this current level
-                        continue;
-                    }
-                    int testDistance = Mathf.Abs(x) + Mathf.Abs(z);
-                    if (testDistance > _maxThrowDistance)
-                    {
-                        continue;
-                    }
-
-                    validGridPositionList.Add(testingGridPosition);
+                    if(IsGridPositionValid(testingGridPosition))
+                        validGridPositionList.Add(testingGridPosition);
                 }
             }
 
@@ -71,6 +61,22 @@ namespace Game
 
             ActionStart(onActionComplete);
         }
+        protected override bool IsGridPositionValid(GridPosition testGridPosition)
+        {
+
+            if (!LevelGrid.Instance.IsValidGrid(testGridPosition))
+            {
+                // Grid is not valid in this current level
+                return false;
+            }
+            int testDistance = Mathf.Abs(testGridPosition.X) + Mathf.Abs(testGridPosition.Z);
+            if (testDistance > _maxThrowDistance)
+            {
+                return false;
+            }
+
+            return true;
+        }
         #endregion
 
         #region Support
@@ -78,6 +84,7 @@ namespace Game
         {
             ActionComplete();
         }
+
         #endregion
     }
 }

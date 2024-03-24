@@ -7,6 +7,7 @@ namespace Game
         private GridSystem<GridObject> _gridSystem;
         private GridPosition _gridPositionStruct;
         private List<Unit> _unitList = new List<Unit>();
+        private IInteractable _interactable;
 
         public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPositionStruct)
         {
@@ -24,6 +25,14 @@ namespace Game
             return _gridPositionStruct.ToString() + unitString;
         }
 
+        public void SetInteractableObject(IInteractable interactable)
+        {
+            this._interactable = interactable;
+        }
+        public IInteractable GetInteractableObject()
+        {
+            return this._interactable;
+        }
         public void AddUnit(Unit unit)
         {
             this._unitList.Add(unit);

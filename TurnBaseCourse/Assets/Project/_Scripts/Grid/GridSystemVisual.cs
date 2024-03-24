@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using log4net.Core;
 using NOOD;
+using NOOD.Extension;
 using PlasticPipe.PlasticProtocol.Client;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ namespace Game
         #endregion
 
         #region private
-        private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
+        private GridSystemVisualSingle[,,] _gridSystemVisualSingleArray;
         #endregion
 
         #region Unity Functions
@@ -45,19 +46,22 @@ namespace Game
         {
             _gridSystemVisualSingleArray = new GridSystemVisualSingle[
                 LevelGrid.Instance.GetWidth(), 
-                LevelGrid.Instance.GetHeight()
+                LevelGrid.Instance.GetHeight(),
+                LevelGrid.Instance.GetFloorAmount()
             ];
 
             for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
             {
                 for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
                 {
-                    GridPosition gridPosition = new GridPosition(x, z);
-                    GridSystemVisualSingle gridSystemVisualSingle = Instantiate(_gridSystemSingleVisualPrefab, LevelGrid.Instance.GetWorldPosition(gridPosition), Quaternion.identity);
-                    _gridSystemVisualSingleArray[x, z] = gridSystemVisualSingle;
+                    for (int floor = 0; floor < LevelGrid.Instance.GetFloorAmount(); floor++)
+                    {
+                        GridPosition gridPosition = new GridPosition(x, z, floor);
+                        GridSystemVisualSingle gridSystemVisualSingle = Instantiate(_gridSystemSingleVisualPrefab, LevelGrid.Instance.GetWorldPosition(gridPosition), Quaternion.identity);
+                        _gridSystemVisualSingleArray[x, z, floor] = gridSystemVisualSingle;
+                    }
                 }
             }
-            HideAllGridPosition();
 
             UpdateGridVisual();
         }
@@ -95,13 +99,20 @@ namespace Game
                 case MoveAction moveAction:
                     gridVisualType = GridVisualType.White;
                     break;
+                case InteractionAction interactionAction:
                 case SpinAction spinAction:
                     gridVisualType = GridVisualType.Blue;
                     break;
                 case ShootAction shootAction:
                     gridVisualType = GridVisualType.Red;
-
                     ShowGridPositionRange(selectedUnit.GetCurrentGridPosition(), shootAction.GetRange(), GridVisualType.RedSoft);
+                    break;
+                case SwordAction swordAction:
+                    gridVisualType = GridVisualType.Red;
+                    ShowGridPositionRange(selectedUnit.GetCurrentGridPosition(), swordAction.GetRange(), GridVisualType.RedSoft, true);
+                    break;
+                case GrenadeAction grenadeAction:
+                    gridVisualType = GridVisualType.Yellow;
                     break;
                 default:
                     break;
@@ -117,9 +128,12 @@ namespace Game
             {
                 for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
                 {
-                    GridSystemVisualSingle gridSystemVisualSingle = GetGridSystemVisualSingle(new GridPosition(x, z));
-                    if (gridSystemVisualSingle == null) continue;
-                    gridSystemVisualSingle.Hide();
+                    for(int floor = 0; floor < LevelGrid.Instance.GetFloorAmount(); floor++)
+                    {
+                        GridSystemVisualSingle gridSystemVisualSingle = GetGridSystemVisualSingle(new GridPosition(x, z, floor));
+                        if (gridSystemVisualSingle == null) continue;
+                        gridSystemVisualSingle.Hide();
+                    }
                 }
             }
         }
@@ -127,11 +141,10 @@ namespace Game
         {
             foreach(var position in gridPositions)
             {
-
                 GetGridSystemVisualSingle(position)?.Show(GetGridVisualTypeMaterial(gridVisualType)); 
             }
         }
-        private void ShowGridPositionRange(GridPosition gridPosition, int range, GridVisualType gridVisualType)
+        private void ShowGridPositionRange(GridPosition gridPosition, int range, GridVisualType gridVisualType, bool isSquare = false)
         {
             List<GridPosition> gridPositionList = new List<GridPosition>();
 
@@ -139,13 +152,18 @@ namespace Game
             {
                 for(int z = -range; z <= range; z++)
                 {
-                    GridPosition testGridPos = gridPosition + new GridPosition(x, z);
+                    GridPosition testGridPos = gridPosition + new GridPosition(x, z, gridPosition.floor);
 
                     if(!LevelGrid.Instance.IsValidGrid(testGridPos))
                     {
                         continue;
                     }
 
+                    if(isSquare) 
+                    {
+                        gridPositionList.Add(testGridPos);
+                        continue;
+                    }
                     int testDistance = Mathf.Abs(x) + Mathf.Abs(z);
                     if(testDistance > range)
                     {
@@ -163,7 +181,7 @@ namespace Game
         public GridSystemVisualSingle GetGridSystemVisualSingle(GridPosition gridPosition)
         {
             if (_gridSystemVisualSingleArray == null) return null;
-            return _gridSystemVisualSingleArray[gridPosition.X, gridPosition.Z];
+            return _gridSystemVisualSingleArray[gridPosition.X, gridPosition.Z, gridPosition.floor];
         }
         private Material GetGridVisualTypeMaterial(GridVisualType gridVisualType)
         {

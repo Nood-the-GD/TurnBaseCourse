@@ -24,7 +24,7 @@ namespace Game
             SetSelectedUnit(_selectedUnit);
         }
 
-        private void Update()
+        private void Update() 
         {
             if(_isBusy)
             {
@@ -49,9 +49,9 @@ namespace Game
         #region Mouse Actions
         private void HandleSelectedAction()
         {
-            if(Input.GetMouseButtonDown(0))
+            if(InputManager.Instance.IsLeftMouseButtonDown())
             {
-                GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+                GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetMouseWorldPosition());
 
                 if (!_selectedAction.IsValidActionGridPosition(mouseGridPosition)) return;
                 if (!_selectedUnit.TrySpendActionPointsToTakeAction(_selectedAction)) return;
@@ -64,7 +64,7 @@ namespace Game
 
         private bool TrySelectUnit()
         {
-            if(Input.GetMouseButtonDown(0))
+            if(InputManager.Instance.IsLeftMouseButtonDown())
             {
                 if (!MouseWorld.IsTryGetSelectedObject(out GameObject gameObject)) return false;
                 

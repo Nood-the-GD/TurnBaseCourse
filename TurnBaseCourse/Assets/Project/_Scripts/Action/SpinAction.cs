@@ -56,6 +56,10 @@ namespace Game
                 actionValue = 0
             };
         }
+        protected override bool IsGridPositionValid(GridPosition testGridPosition)
+        {
+            return true;
+        }
         #endregion
     }
 }

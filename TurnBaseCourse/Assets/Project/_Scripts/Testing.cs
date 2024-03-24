@@ -6,13 +6,11 @@ namespace Game
 {
     public class Testing : MonoBehaviour
     {
-        List<GridPosition> gridPositions = new List<GridPosition>() { new GridPosition(1, 1), new GridPosition(2, 2) };
+        // List<GridPosition> gridPositions = new List<GridPosition>() { new GridPosition(1, 1), new GridPosition(2, 2) };
 
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.T))
-            {
-            }
+            // Debug.Log(LevelGrid.Instance.GetGridPosition(MouseWorld.GetMouseWorldPosition()));
         }
     }
 }

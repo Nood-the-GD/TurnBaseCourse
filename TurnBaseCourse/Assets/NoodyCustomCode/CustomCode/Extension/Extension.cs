@@ -51,6 +51,34 @@ namespace NOOD.Extension
         }
     }
 
+    public static class VectorExtension
+    {
+        public static Vector3 ToVector3(this Vector2 vector2, float z = 0)
+        {
+            return new Vector3(vector2.x, vector2.y, z);
+        }
+        public static Vector3 ToVector3XZ(this Vector2 vector2, float y = 0)
+        {
+            return new Vector3(vector2.x, y, vector2.y);
+        }
+        public static Vector3 ToVector3YZ(this Vector2 vector2, float x = 0)
+        {
+            return new Vector3(x, vector2.x, vector2.y);
+        }
+        public static Vector2 ToVector2XY(this Vector3 vector3)
+        {
+            return new Vector2(vector3.x, vector3.y);
+        }
+        public static Vector2 ToVector2XZ(this Vector3 vector3)
+        {
+            return new Vector2(vector3.x, vector3.z);
+        }
+        public static Vector2 ToVector2YZ(this Vector3 vector3)
+        {
+            return new Vector2(vector3.y, vector3.z);
+        }
+    }
+
 #if UNITY_EDITOR
     public static class EnumCreator
     {

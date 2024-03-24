@@ -58,7 +58,7 @@ namespace Game
         }
         private void RotateHandler(Vector3 moveDirection)
         {
-            this.transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * _rotateSpeed);
+            this.transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * _rotateSpeed);
         }
         #endregion
 
@@ -83,12 +83,15 @@ namespace Game
             {
                 for (int z = -_maxMoveDistance; z <= _maxMoveDistance; z++)
                 {
-                    GridPosition offSetGridPosition = new GridPosition(x, z);
-                    GridPosition testGridPosition = unitGridPosition + offSetGridPosition;
-
-                    if (IsGridPositionValid(testGridPosition))
+                    for(int floor = -_maxMoveDistance; floor <= _maxMoveDistance; floor++)
                     {
-                        validGridPositionList.Add(testGridPosition);
+                        GridPosition offSetGridPosition = new GridPosition(x, z, floor);
+                        GridPosition testGridPosition = unitGridPosition + offSetGridPosition;
+
+                        if (IsGridPositionValid(testGridPosition))
+                        {
+                            validGridPositionList.Add(testGridPosition);
+                        }
                     }
                 }
             }
@@ -108,10 +111,7 @@ namespace Game
                 actionValue = targetCountAtGridPosition * 10
             };
         }
-        #endregion
-
-        #region Support
-        private bool IsGridPositionValid(GridPosition testGridPosition)
+        protected override bool IsGridPositionValid(GridPosition testGridPosition)
         {
             GridPosition unitGridPosition = _unit.GetCurrentGridPosition();
 
@@ -132,6 +132,9 @@ namespace Game
 
             return true;
         }
+        #endregion
+
+        #region Support
         #endregion
     }
 }

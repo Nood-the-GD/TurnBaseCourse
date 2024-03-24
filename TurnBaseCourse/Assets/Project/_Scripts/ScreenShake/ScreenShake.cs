@@ -1,6 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
+using NOOD;
 using UnityEngine;
 using Cinemachine;
-using NOOD;
 
 namespace Game
 {
@@ -13,16 +15,9 @@ namespace Game
             _cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
         }
 
-        private void Update()
+        public void Shake(float insensitive = 1f)
         {
-            if(Input.GetKeyDown(KeyCode.T))
-            {
-            }    
-        }
-
-        public void Shake(float intensity = 1f)
-        {
-            _cinemachineImpulseSource.GenerateImpulse(intensity);
+            _cinemachineImpulseSource.GenerateImpulse(insensitive);
         }
     }
 }

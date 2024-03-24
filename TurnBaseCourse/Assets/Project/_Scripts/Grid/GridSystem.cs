@@ -10,13 +10,17 @@ namespace Game
         private int _width;
         private int _height;
         private float _cellSize;
+        private int _floor;
+        private float _floorHeight;
         private TGridObject[,] _gridObjectArray;
 
-        public GridSystem(int width, int height, float cellSize, Func<GridSystem<TGridObject>, GridPosition, TGridObject> createTGridObject)
+        public GridSystem(int width, int height, float cellSize, int floor, float floorHeight, Func<GridSystem<TGridObject>, GridPosition, TGridObject> createTGridObject)
         {
             this._width = width;
             this._height = height;
             this._cellSize = cellSize;
+            this._floor = floor;
+            this._floorHeight = floorHeight;
 
             _gridObjectArray = new TGridObject[width, height];
 
@@ -24,16 +28,16 @@ namespace Game
             {
                 for (int z = 0; z < height; z++)
                 {
-                    GridPosition gridPositionStruct = new GridPosition(x, z);
+                    GridPosition gridPositionStruct = new GridPosition(x, z, floor);
                     _gridObjectArray[x, z] = createTGridObject(this, gridPositionStruct);
-                    Debug.DrawLine(GetWorldPosition(gridPositionStruct), GetWorldPosition(gridPositionStruct) + Vector3.right * .1f, Color.white, 1000);
                 }
             }
         }
 
         public Vector3 GetWorldPosition(GridPosition gridPositionStruct)
         {
-            return new Vector3(gridPositionStruct.X, 0, gridPositionStruct.Z) * _cellSize;
+            Vector3 floorOffset = new Vector3(0, _floor, 0) * _floorHeight;
+            return new Vector3(gridPositionStruct.X, 0, gridPositionStruct.Z) * _cellSize + floorOffset;
         }
 
         public GridPosition GetGridPosition(Vector3 worldPosition)
@@ -41,7 +45,8 @@ namespace Game
             return new GridPosition
             (
                 Mathf.RoundToInt(worldPosition.x / _cellSize),
-                Mathf.RoundToInt(worldPosition.z / _cellSize)
+                Mathf.RoundToInt(worldPosition.z / _cellSize),
+                _floor
             );
         }
 
@@ -60,7 +65,7 @@ namespace Game
             {
                 for (int z = 0; z < _height; z++)
                 {
-                    GridPosition gridPositionStruct = new GridPosition(x, z);
+                    GridPosition gridPositionStruct = new GridPosition(x, z, _floor);
 
                     Transform debugTransform = GameObject.Instantiate(debugPref, GetWorldPosition(gridPositionStruct), debugPref.rotation);
 

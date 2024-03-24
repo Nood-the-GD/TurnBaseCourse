@@ -42,6 +42,7 @@ namespace Game
         public abstract void TakeAction(GridPosition gridPosition, Action onActionComplete);
         public abstract List<GridPosition> GetValidGridPositionList();
         public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
+        protected abstract bool IsGridPositionValid(GridPosition testGridPosition);
         #endregion
 
         #region Public functions

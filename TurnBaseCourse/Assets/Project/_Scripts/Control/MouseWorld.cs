@@ -11,16 +11,16 @@ namespace Game
         {
         }
 
-        public static Vector3 GetPosition()
+        public static Vector3 GetMouseWorldPosition()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(InputManager.Instance.GetMouseScreenPosition());
             Physics.Raycast(ray, out RaycastHit hitInfo, float.MaxValue, MouseWorld.Instance._groundLayer);
             return hitInfo.point;
         }
 
         public static bool TryGetSelectedObjectWithLayer(LayerMask layerMask, out GameObject gameObject)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(InputManager.Instance.GetMouseScreenPosition());
             if (Physics.Raycast(ray, out RaycastHit hitInfo, float.MaxValue, layerMask))
             {
                 gameObject = hitInfo.transform.gameObject;
@@ -34,7 +34,7 @@ namespace Game
         }
         public static bool IsTryGetSelectedObject(out GameObject gameObject)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(InputManager.Instance.GetMouseScreenPosition());
             if (Physics.Raycast(ray, out RaycastHit hitInfo, float.MaxValue))
             {
                 gameObject = hitInfo.transform.gameObject;
