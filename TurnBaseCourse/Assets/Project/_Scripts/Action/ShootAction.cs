@@ -106,17 +106,17 @@ namespace Game
 
             BulletScript bulletScript = Instantiate<BulletScript>(_bulletPref, _shootPoint.position, Quaternion.identity);
 
-            Vector3 shootPos = _targetUnit.GetWorldPosition();
-            shootPos.y = bulletScript.transform.position.y;
+            float unitShoulderHeight = 1.7f;
+            Vector3 shootPos = _targetUnit.GetWorldPosition() + Vector3.up * unitShoulderHeight;
 
             bulletScript.Setup(shootPos);
-            Debug.Log(_shootPoint.position);
 
             _targetUnit.Damage(_damage, shootPos);
         }
         private void RotateHandler(Vector3 moveDirection)
         {
-            this.transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * _rotateSpeed);
+            moveDirection.y = 0;
+            this.transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * _rotateSpeed);
         }
         public Unit GetTargetUnit()
         {
@@ -148,13 +148,16 @@ namespace Game
             {
                 for (int z = -_maxShootDistance; z <= _maxShootDistance; z++)
                 {
-                    GridPosition offSetGridPosition = new GridPosition(x, z, 0);
-                    GridPosition testingGridPosition = unitGridPosition + offSetGridPosition;
+                    for (int floor = -_maxShootDistance; floor <= _maxShootDistance; floor++)
+                    {
+                        GridPosition offSetGridPosition = new GridPosition(x, z, floor);
+                        GridPosition testingGridPosition = unitGridPosition + offSetGridPosition;
 
-                    if (IsGridPositionValid(testingGridPosition))
-                        validGridPositionList.Add(testingGridPosition);
-                    else
-                        continue;
+                        if (IsGridPositionValid(testingGridPosition))
+                            validGridPositionList.Add(testingGridPosition);
+                        else
+                            continue;
+                    }
                 }
             }
             return validGridPositionList;

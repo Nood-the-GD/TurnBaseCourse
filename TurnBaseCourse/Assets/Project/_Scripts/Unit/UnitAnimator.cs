@@ -1,4 +1,5 @@
 using System;
+using NOOD;
 using UnityEngine;
 using static Game.ShootAction;
 
@@ -6,10 +7,20 @@ namespace Game
 {
     public class UnitAnimator : MonoBehaviour
     {
+        #region Events
+        public event EventHandler<OnJumpCompleteEventArgs> OnJumpComplete;
+        public class OnJumpCompleteEventArgs : EventArgs
+        {
+            public GridPosition targetGridPosition;
+        }
+        #endregion
+
         #region Variables
         private const string SWORD_ATTACK_ANIMATION_NAME = "SwordAttack";
         private const string SHOOT_ANIMATION_NAME = "Shoot";
         private const string WALK_ANIMATION_NAME = "Walk";
+        private const string JUMP_DOWN_ANIMATION_NAME = "JumpDown";
+        private const string JUMP_UP_ANIMATION_NAME = "JumpUp";
         #endregion
 
         [SerializeField] private Animator _unitAnimator;
@@ -22,6 +33,7 @@ namespace Game
             {
                 moveAction.OnStartMoving += MoveAction_OnStartMoving;
                 moveAction.OnStopMoving += MoveAction_OnStopMoving;
+                moveAction.OnChangeFloorStarted += MoveAction_OnChangeFloorStarted;
             }
             if(TryGetComponent<ShootAction>(out ShootAction shootAction))
             {
@@ -32,6 +44,7 @@ namespace Game
                 swordAction.onSwordActionStarted += SwordAction_OnSwordActionStarted;
                 swordAction.onSwordActionCompleted += SwordAction_OnSwordActionCompleted;
             }
+            
         }
         private void Start()
         {
@@ -40,6 +53,35 @@ namespace Game
         #endregion
 
         #region Event functions
+        private void MoveAction_OnChangeFloorStarted(object sender, MoveAction.OnChangeFloorEventArgs e)
+        {
+            if(e.unitGridPosition.floor > e.targetGridPosition.floor)
+            {
+                // Move down
+                _unitAnimator.SetTrigger(JUMP_DOWN_ANIMATION_NAME);
+                float duration = _unitAnimator.GetCurrentAnimatorClipInfo(0).Length;
+                NoodyCustomCode.StartDelayFunction(() =>
+                {
+                    OnJumpComplete?.Invoke(this, new OnJumpCompleteEventArgs
+                    {
+                        targetGridPosition = e.targetGridPosition
+                    });
+                }, duration - 0.17f);
+            }
+            if(e.unitGridPosition.floor < e.targetGridPosition.floor)
+            {
+                // Move up
+                _unitAnimator.SetTrigger(JUMP_UP_ANIMATION_NAME);
+                float duration = _unitAnimator.GetCurrentAnimatorClipInfo(0).Length;
+                NoodyCustomCode.StartDelayFunction(() =>
+                {
+                    OnJumpComplete?.Invoke(this, new OnJumpCompleteEventArgs
+                    {
+                        targetGridPosition = e.targetGridPosition
+                    });
+                }, duration - 0.28f);
+            }
+        }
         private void SwordAction_OnSwordActionStarted(object sender, EventArgs e)
         {
             EquipSword();

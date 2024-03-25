@@ -15,7 +15,7 @@ namespace Game
             _cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
         }
 
-        public void Shake(float insensitive = 1f)
+        public void Shake(float insensitive = .1f)
         {
             _cinemachineImpulseSource.GenerateImpulse(insensitive);
         }

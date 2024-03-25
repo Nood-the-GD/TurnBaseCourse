@@ -91,7 +91,7 @@ namespace Game
         }
         public GridPosition GetCurrentGridPosition()
         {
-            return _gridPosition;
+            return LevelGrid.Instance.GetGridPosition(this.transform.position);
         }
         public BaseAction[] GetBaseActionArray()
         {

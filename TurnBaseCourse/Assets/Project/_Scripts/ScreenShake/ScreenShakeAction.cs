@@ -19,11 +19,11 @@ namespace Game
         #region Events functions
         private void GrenadeProjectile_onAnyGrenadeExploded(object sender, EventArgs e)
         {
-            ScreenShake.Instance.Shake(5);
+            ScreenShake.Instance.Shake(.5f);
         }
         private void ShootAction_OnAnyShoot(object sender, ShootAction.OnShootEventArgs e)
         {
-            ScreenShake.Instance.Shake(1f);
+            ScreenShake.Instance.Shake();
         }
         #endregion
     }

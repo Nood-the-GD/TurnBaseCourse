@@ -121,7 +121,7 @@ MonoBehaviour:
   _maxShootDistance: 7
   _obstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
   _bulletPref: {fileID: 3199773941177118259, guid: 157b47e278a297c4894d68fd2b0fbb63,
     type: 3}
   _shootPoint: {fileID: 6407307571134766614}
@@ -207,6 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d598eeb52f3787e479f4fc1701476960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxInteractDistance: 1
 --- !u!1 &1804256005694080753
 GameObject:
   m_ObjectHideFlags: 0

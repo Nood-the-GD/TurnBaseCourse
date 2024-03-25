@@ -40,8 +40,10 @@ namespace Game
         {
             UnitActionSystem.Instance.OnSelectActionChange += UnitActionSystem_OnSelectActionChangeHandler;
             UnitActionSystem.Instance.OnSelectUnitChange += UnitActionSystem_OnSelectUnitChangeHandler;
-            LevelGrid.Instance.OnAnyUnitMoveGridPosition += LevelGrid_OnAnyUnitMoveGridPositionHandler;
+            UnitActionSystem.Instance.OnActionBusyChange += UnitActionSystem_OnActionBusyChange;
         }
+
+
         private void Start()
         {
             _gridSystemVisualSingleArray = new GridSystemVisualSingle[
@@ -72,15 +74,15 @@ namespace Game
         #endregion
 
         #region Event functions
+        private void UnitActionSystem_OnActionBusyChange(object sender, bool e)
+        {
+            UpdateGridVisual();
+        }
         private void UnitActionSystem_OnSelectActionChangeHandler(object sender, EventArgs eventArgs)
         {
             UpdateGridVisual();
         }
         private void UnitActionSystem_OnSelectUnitChangeHandler(object sender, EventArgs eventArgs)
-        {
-            UpdateGridVisual();
-        }
-        private void LevelGrid_OnAnyUnitMoveGridPositionHandler(object sender, EventArgs eventArgs)
         {
             UpdateGridVisual();
         }
@@ -152,25 +154,28 @@ namespace Game
             {
                 for(int z = -range; z <= range; z++)
                 {
-                    GridPosition testGridPos = gridPosition + new GridPosition(x, z, gridPosition.floor);
-
-                    if(!LevelGrid.Instance.IsValidGrid(testGridPos))
+                    for(int floor = -range; floor <= range; floor++)
                     {
-                        continue;
-                    }
+                        GridPosition testGridPos = gridPosition + new GridPosition(x, z, floor);
 
-                    if(isSquare) 
-                    {
-                        gridPositionList.Add(testGridPos);
-                        continue;
-                    }
-                    int testDistance = Mathf.Abs(x) + Mathf.Abs(z);
-                    if(testDistance > range)
-                    {
-                        continue;
-                    }
+                        if(!LevelGrid.Instance.IsValidGrid(testGridPos))
+                        {
+                            continue;
+                        }
 
-                    gridPositionList.Add(testGridPos);       
+                        if(isSquare) 
+                        {
+                            gridPositionList.Add(testGridPos);
+                            continue;
+                        }
+                        int testDistance = Mathf.Abs(x) + Mathf.Abs(z);
+                        if(testDistance > range)
+                        {
+                            continue;
+                        }
+
+                        gridPositionList.Add(testGridPos);       
+                    }
                 }
             }
             ShowGridPositionList(gridPositionList, gridVisualType);

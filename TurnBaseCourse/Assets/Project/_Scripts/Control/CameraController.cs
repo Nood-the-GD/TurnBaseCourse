@@ -1,14 +1,15 @@
 using UnityEngine;
 using Cinemachine;
 using NOOD.Extension;
+using NOOD;
 
 namespace Game
 {
-    public class CameraController : MonoBehaviour
+    public class CameraController : MonoBehaviorInstance<CameraController>
     {
         #region Variables
         private const float MIN_FOLLOW_Y_OFFSET = 2f;
-        private const float MAX_FOLLOW_X_OFFSET = 12f;
+        private const float MAX_FOLLOW_X_OFFSET = 15f;
 
         [SerializeField] private float _moveSpeed = 10f;
         [SerializeField] private float _rotationSpeed = 100f;
@@ -56,6 +57,13 @@ namespace Game
             _followOffset.y = Mathf.Clamp(_followOffset.y, MIN_FOLLOW_Y_OFFSET, MAX_FOLLOW_X_OFFSET);
             
             _cinemachineTransposer.m_FollowOffset = Vector3.Lerp(_cinemachineTransposer.m_FollowOffset, _followOffset, Time.deltaTime * _zoomSpeed);
+        }
+        #endregion
+
+        #region Support
+        public float GetCameraHeight()
+        {
+            return _followOffset.y;
         }
         #endregion
     }
